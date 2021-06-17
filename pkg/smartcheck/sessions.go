@@ -2,6 +2,17 @@ package main
 
 import "time"
 
+type RequestCreateSession struct {
+	User struct {
+		UserID   string `json:"userID"`
+		Password string `json:"password"`
+	} `json:"user"`
+	Saml struct {
+		Response     string `json:"response"`
+		SelectedRole string `json:"selectedRole"`
+	} `json:"saml"`
+}
+
 type ResponseCreateSession struct {
 	ID   string `json:"id"`
 	Href string `json:"href"`

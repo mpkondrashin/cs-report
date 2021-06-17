@@ -31,36 +31,6 @@ type (
 		Saml RequestCreateSessionSamlCredentials
 	}
 
-	ResponseUser struct {
-		Id                     string
-		Href                   string
-		UserID                 string
-		Name                   string
-		Description            string
-		Role                   string
-		PasswordChangeRequired bool
-		Created                string
-		Updated                string
-	}
-	/*
-		ResponseCreateSession struct {
-			Id              string
-			Href            string
-			User            ResponseUser
-			Token           string
-			Created         string
-			Updated         string
-			Expires         string
-			RoleSessionName string
-		}
-	*/
-	//ResponseDeleteSessionFields {
-
-	//"fields": {
-	//"property1": "string",
-	//"property2": "string"
-	//}
-	//}
 	ResponseDeleteSession struct {
 		Message string
 	}
@@ -251,14 +221,17 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
-	request := RequestCreateSessionUser{
-		User: RequestCreateSessionUserCredentials{
-			UserID:   "administrator",
-			Password: "Zxcv7890!",
-		},
-	}
+	//	request := RequestCreateSessionUser{
+	//		User: RequestCreateSessionUserCredentials{
+	//			UserID:   "administrator",
+	//			Password: "Zxcv7890!",
+	//		},
+	//	}
+	r := RequestCreateSession{}
+	r.User.UserID = "administrator"
+	r.User.Password = "Zxcv7890!"
 	fmt.Println("Create Session")
-	session, err := sc.CreateSession(&request)
+	session, err := sc.CreateSession(&r)
 	if err != nil {
 		fmt.Println(err)
 		return
