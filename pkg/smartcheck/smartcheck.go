@@ -2,12 +2,12 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
+	//	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
+	//	"log"
 	"net/http"
-	"os"
+	//	"os"
 )
 
 func main() {
@@ -20,7 +20,11 @@ func main() {
     "password": "Zxcv7890!"
   }
 }`
-	client := &http.Client{}
+
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
+	}
+	client := &http.Client{Transport: transport}
 	body := bytes.NewBufferString(requestBody)
 	req, err := http.NewRequest("POST", URL, body)
 	if err != nil {
