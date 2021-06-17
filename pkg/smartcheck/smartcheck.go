@@ -235,7 +235,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			if !ok {
 				panic(fmt.Errorf("%s is not a list", key))
 			}
-			for n, each := range list {
+			for _, each := range list {
 				out <- each
 				//	fmt.Printf("%d\n%v\n\n\n", n, each)
 			}
