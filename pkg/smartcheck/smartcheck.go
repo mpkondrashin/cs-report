@@ -206,6 +206,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 	out := make(chan interface{}, 100)
 	go func() {
 		url := fmt.Sprintf("%s/%s?%s", s.smartCheck.url, baseURL, parameters)
+		fmt.Printf(url)
 		req, err := http.NewRequest(method, url, body)
 		if err != nil {
 			panic(err)
