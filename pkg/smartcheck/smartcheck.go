@@ -20,7 +20,7 @@ func main() {
     "password": "Zxcv7890!"
   }
 }`
-
+	ignoreTLSError := true
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
 	}
