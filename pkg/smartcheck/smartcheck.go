@@ -293,12 +293,12 @@ func main() {
 	//fmt.Print(string(s))
 
 	session.List("GET", "https://192.168.184.18:31616/api/sessions", "", "sessions", nil)
-
-	fmt.Println("Delete Session")
-	err = session.Delete()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println("Done")
+	/*
+		fmt.Println("Delete Session")
+		err = session.Delete()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	*/fmt.Println("Done")
 }
