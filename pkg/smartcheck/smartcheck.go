@@ -146,6 +146,9 @@ func (s *SmartCheckSession) Delete() error {
 	if err != nil {
 		return err
 	}
+	if len(bodyBytes) == 0 {
+		return nil
+	}
 	var response ResponseDeleteSession
 	err = json.Unmarshal(bodyBytes, &response)
 	fmt.Println("A")
