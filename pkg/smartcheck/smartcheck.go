@@ -202,7 +202,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Scans[0])
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
