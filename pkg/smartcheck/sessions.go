@@ -1,5 +1,7 @@
 package main
 
+import "time"
+
 type ResponseCreateSession struct {
 	ID   string `json:"id"`
 	Href string `json:"href"`
