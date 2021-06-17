@@ -157,7 +157,7 @@ func (s *SmartCheckSession) Delete() error {
 }
 
 func (s *SmartCheckSession) ListScans() (*ResponseListScans, error) {
-	url := fmt.Sprintf("%s/scans", s.smartCheck.url)
+	url := fmt.Sprintf("%s/scans?expand=none", s.smartCheck.url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
