@@ -12,42 +12,47 @@ import (
 	//	"os"
 )
 
-type RequestCreateSessionUser struct {
-	User struct {
+type (
+	RequestCreateSessionUserCredentials struct {
 		UserID   string
 		Password string
 	}
-}
+	RequestCreateSessionUser struct {
+		User RequestCreateSessionUserCredentials
+	}
 
-type RequestCreateSessionSaml struct {
-	Saml struct {
+	RequestCreateSessionSamlCredentials struct {
 		Response     string
 		SelectedRole string
 	}
-}
 
-type ResponseUser struct {
-	Id                     string
-	Href                   string
-	UserID                 string
-	Name                   string
-	Description            string
-	Role                   string
-	PasswordChangeRequired string
-	Created                string
-	Updated                string
-}
+	RequestCreateSessionSaml struct {
+		Saml RequestCreateSessionSamlCredentials
+	}
 
-type ResponseSessions struct {
-	Id              string
-	Href            string
-	User            ResponseUser
-	Token           string
-	Created         string
-	Updated         string
-	Expires         string
-	RoleSessionName string
-}
+	ResponseUser struct {
+		Id                     string
+		Href                   string
+		UserID                 string
+		Name                   string
+		Description            string
+		Role                   string
+		PasswordChangeRequired string
+		Created                string
+		Updated                string
+	}
+
+	ResponseSessions struct {
+		Id              string
+		Href            string
+		User            ResponseUser
+		Token           string
+		Created         string
+		Updated         string
+		Expires         string
+		RoleSessionName string
+	}
+)
 
 func main() {
 	URL := "https://192.168.184.18:31616/api/sessions"
