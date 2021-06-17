@@ -1,6 +1,6 @@
 package main
 
-type RespondCreateSession struct {
+type ResponseCreateSession struct {
 	ID   string `json:"id"`
 	Href string `json:"href"`
 	User struct {
