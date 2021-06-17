@@ -6,7 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-
+	"strconv"
+	"strings"
 	//	"log"
 	"net/http"
 	//	"os"
@@ -156,7 +157,71 @@ func (s *SmartCheckSession) Delete() error {
 	return nil
 }
 
-func (s *SmartCheckSession) ListScans() (*ResponseListScans, error) {
+type ListScansParameters struct {
+	Expand     string
+	Cursor     string
+	Limit      int64
+	Registry   string
+	Repository string
+	Tag        string
+	Digest     string
+	Exact      bool
+	Status     string
+}
+
+func (l *ListScansParameters) Query() string {
+	var sb strings.Builder
+	if l.Expand != "" {
+		sb.WriteString("expand=")
+		sb.WriteString(l.Expand)
+		sb.WriteString("&")
+	}
+	if l.Cursor != "" {
+		sb.WriteString("cursor=")
+		sb.WriteString(l.Cursor)
+		sb.WriteString("&")
+	}
+	if l.Limit != 0 {
+		sb.WriteString("limit=")
+		sb.WriteString(strconv.FormatInt(l.Limit, 10))
+		sb.WriteString("&")
+	}
+	if l.Registry != "" {
+		sb.WriteString("registry=")
+		sb.WriteString(l.Registry)
+		sb.WriteString("&")
+	}
+	if l.Repository != "" {
+		sb.WriteString("repository=")
+		sb.WriteString(l.Repository)
+		sb.WriteString("&")
+	}
+	if l.Tag != "" {
+		sb.WriteString("tag=")
+		sb.WriteString(l.Tag)
+		sb.WriteString("&")
+	}
+	if l.Digest != "" {
+		sb.WriteString("digest=")
+		sb.WriteString(l.Digest)
+		sb.WriteString("&")
+	}
+	if l.Exact {
+		sb.WriteString("exact=true&")
+	}
+	if l.Status != "" {
+		sb.WriteString("status=")
+		sb.WriteString(l.Status)
+		sb.WriteString("&")
+	}
+	result := sb.String()
+	if len(result) == 0 {
+		return ""
+	}
+	return result[:len(result)-1]
+}
+
+func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*ResponseListScans, error) {
 	url := fmt.Sprintf("%s/scans?limit=1", s.smartCheck.url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -197,7 +262,19 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	resp, err := session.ListScans()
+	listScansParameters := ListScansParameters{
+		Expand:     "",
+		Cursor:     "",
+		Limit:      1,
+		Registry:   "",
+		Repository: "",
+		Tag:        "",
+		Digest:     "",
+		Exact:      false,
+		Status:     "",
+	}
+
+	resp, err := session.ListScans(&listScansParameters)
 	if err != nil {
 		fmt.Println(err)
 		return
