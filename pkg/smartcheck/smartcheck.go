@@ -269,17 +269,18 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	listScansParameters := ListScansParameters{
-		Expand:     "",
-		Cursor:     "",
-		Limit:      1,
-		Registry:   "",
-		Repository: "",
-		Tag:        "",
-		Digest:     "",
-		Exact:      false,
-		Status:     "",
-	}
+	/*
+		listScansParameters := ListScansParameters{
+			Expand:     "",
+			Cursor:     "",
+			Limit:      1,
+			Registry:   "",
+			Repository: "",
+			Tag:        "",
+			Digest:     "",
+			Exact:      false,
+			Status:     "",
+		}*/
 
 	//	resp, err := session.ListScans(&listScansParameters)
 	//	if err != nil {
