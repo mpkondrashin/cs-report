@@ -157,7 +157,7 @@ func (s *SmartCheckSession) Delete() error {
 }
 
 func (s *SmartCheckSession) ListScans() (*ResponseListScans, error) {
-	url := fmt.Sprintf("%s/scans?expand=none", s.smartCheck.url)
+	url := fmt.Sprintf("%s/scans?limit=1", s.smartCheck.url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -202,7 +202,8 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("%+v\n", resp.Scans[0])
+	fmt.Printf("%+v\n", resp.Scans)
+	//fmt.Printf("%+v\n", resp.Scans[0])
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
