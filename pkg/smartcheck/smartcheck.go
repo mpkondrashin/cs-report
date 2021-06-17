@@ -52,6 +52,16 @@ type (
 		Expires         string
 		RoleSessionName string
 	}
+	//ResponseDeleteSessionFields {
+
+	//"fields": {
+	//"property1": "string",
+	//"property2": "string"
+	//}
+	//}
+	ResponseDeleteSession struct {
+		Message string
+	}
 )
 
 type SmartCheck struct {
@@ -84,7 +94,8 @@ func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession,
 
 	}
 	body := bytes.NewBuffer(requestJSON)
-	req, err := http.NewRequest("POST", s.url, body)
+	url := fmt.Sprintf("%s/sessions", s.url)
+	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
 		return nil, err
 	}
@@ -112,11 +123,35 @@ type SmartCheckSession struct {
 }
 
 func (s *SmartCheckSession) Delete() error {
+	fmt.Print(s.smartCheck.url, s.response.Id)
+
+	url := fmt.Sprintf("%s/sessions/%s", s.smartCheck.url, s.response.Id)
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := s.smartCheck.Request(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var response ResponseDeleteSession
+	err = json.Unmarshal(bodyBytes, &response)
+	if err != nil {
+		return err
+	}
+	if response.Message != "" {
+		return fmt.Errorf("Delete: %s", response.Message)
+	}
 	return nil
 }
 
 func main() {
-	URL := "https://192.168.184.18:31616/api/sessions"
+	URL := "https://192.168.184.18:31616/api"
 	fmt.Println("Calling API...")
 	sc := NewSmartCheck(URL, true)
 	request := RequestCreateSessionUser{
@@ -127,4 +162,6 @@ func main() {
 	}
 	session, err := sc.CreateSession(&request)
 	fmt.Print(session, err)
+	err = session.Delete()
+	fmt.Print(err)
 }
