@@ -221,17 +221,17 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
-	//	request := RequestCreateSessionUser{
-	//		User: RequestCreateSessionUserCredentials{
-	//			UserID:   "administrator",
-	//			Password: "Zxcv7890!",
-	//		},
-	//	}
-	r := RequestCreateSession{}
-	r.User.UserID = "administrator"
-	r.User.Password = "Zxcv7890!"
+	request := RequestCreateSessionUser{
+		User: RequestCreateSessionUserCredentials{
+			UserID:   "administrator",
+			Password: "Zxcv7890!",
+		},
+	}
+	//	r := RequestCreateSession{}
+	//	r.User.UserID = "administrator"
+	//	r.User.Password = "Zxcv7890!"
 	fmt.Println("Create Session")
-	session, err := sc.CreateSession(&r)
+	session, err := sc.CreateSession(&request)
 	if err != nil {
 		fmt.Println(err)
 		return
