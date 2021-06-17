@@ -82,7 +82,6 @@ func (s *SmartCheck) Request(req *http.Request) (*http.Response, error) {
 	}
 	client := &http.Client{Transport: transport}
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("X-Api-Version", "2018-05-01")
 	return client.Do(req)
 }
@@ -99,6 +98,7 @@ func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession,
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Content-Type", "application/json")
 	resp, err := s.Request(req)
 	if err != nil {
 		return nil, err
@@ -127,8 +127,6 @@ func (s *SmartCheckSession) Request(req *http.Request) (*http.Response, error) {
 	return s.smartCheck.Request(req)
 }
 func (s *SmartCheckSession) Delete() error {
-	fmt.Print(s.smartCheck.url, s.response.Id)
-
 	url := fmt.Sprintf("%s/sessions/%s", s.smartCheck.url, s.response.Id)
 	req, err := http.NewRequest("DELETE", url, nil)
 	fmt.Println("A")
