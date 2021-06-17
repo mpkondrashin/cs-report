@@ -59,7 +59,7 @@ func main() {
 	fmt.Println("Calling API...")
 
 	request := RequestCreateSessionUser{
-		User: {
+		User: RequestCreateSessionUserCredentials{
 			UserID:   "administrator",
 			Password: "Zxcv7890!",
 		},
