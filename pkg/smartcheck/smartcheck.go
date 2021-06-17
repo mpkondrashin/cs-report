@@ -24,7 +24,7 @@ type RequestCreateSessionSaml struct {
 
 type RequestCreateSession struct {
 	User RequestCreateSessionUser
-	Saml RequestCreateSessionSamlministrator
+	Saml RequestCreateSessionSaml
 }
 
 type ResponseUser struct {
