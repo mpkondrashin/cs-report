@@ -202,51 +202,57 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
-func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) {
-	url := fmt.Sprintf("%s?%s", baseURL, parameters)
-	req, err := http.NewRequest(method, url, body)
-	if err != nil {
-		panic(err)
-		//return nil, err
-	}
-	//go func() {
-	for {
-		resp, err := s.Request(req)
+func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) chan interface{} {
+	out := make(chan interface{}, 100)
+	go func() {
+		url := fmt.Sprintf("%s/%s?%s", s.smartCheck.url, baseURL, parameters)
+		req, err := http.NewRequest(method, url, body)
 		if err != nil {
 			panic(err)
 			//return nil, err
 		}
-		defer resp.Body.Close()
-		bodyBytes, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err)
-			//	return nil, err
-		}
-		if len(bodyBytes) == 0 {
-			panic(fmt.Errorf("Empty response"))
-			//	return nil, fmt.Errorf("Empty response")
-		}
+		//go func() {
+		for {
+			resp, err := s.Request(req)
+			if err != nil {
+				panic(err)
+				//return nil, err
+			}
+			defer resp.Body.Close()
+			bodyBytes, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				panic(err)
+				//	return nil, err
+			}
+			if len(bodyBytes) == 0 {
+				panic(fmt.Errorf("Empty response"))
+				//	return nil, fmt.Errorf("Empty response")
+			}
 
-		var response map[string]interface{}
-		err = json.Unmarshal([]byte(bodyBytes), &response)
-		list, ok := response[key].([]interface{})
-		if !ok {
-			panic(fmt.Errorf("%s is not a list", key))
+			var response map[string]interface{}
+			err = json.Unmarshal([]byte(bodyBytes), &response)
+			list, ok := response[key].([]interface{})
+			if !ok {
+				panic(fmt.Errorf("%s is not a list", key))
+			}
+			for n, each := range list {
+				out <- each
+				//	fmt.Printf("%d\n%v\n\n\n", n, each)
+			}
+			cursor, ok := response["next"]
+			if !ok {
+				fmt.Println("======= NO NEXT ======")
+				break
+			}
+			url = fmt.Sprintf("%s?cursor=%s", baseURL, cursor)
+			req, err = http.NewRequest(method, url, nil)
+			if err != nil {
+				panic(err)
+			}
 		}
-		for n, each := range list {
-			fmt.Printf("%d\n%v\n\n\n", n, each)
-		}
-		cursor, ok := response["next"]
-		if !ok {
-			fmt.Println("======= NO NEXT ======")
-			break
-		}
-		url = fmt.Sprintf("%s?cursor=%s", baseURL, cursor)
-		req, err = http.NewRequest(method, url, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
+		close(out)
+	}()
+	return out
 	//	return &response, nil
 
 }
@@ -292,7 +298,11 @@ func main() {
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	//fmt.Print(string(s))
 
-	session.List("GET", "https://192.168.184.18:31616/api/sessions", "", "sessions", nil)
+	ss := session.List("GET", "https://192.168.184.18:31616/api/sessions", "", "sessions", nil)
+	for {
+		q := <-ss
+		fmt.Printf("%v\n\n\n", q)
+	}
 	/*
 		fmt.Println("Delete Session")
 		err = session.Delete()
