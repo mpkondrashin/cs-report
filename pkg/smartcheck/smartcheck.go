@@ -203,7 +203,7 @@ func main() {
 		return
 	}
 	fmt.Printf("%+v\n", resp.Scans)
-	//fmt.Printf("%+v\n", resp.Scans[0])
+	fmt.Printf("%d\n", len(resp.Scans))
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
