@@ -303,6 +303,9 @@ func main() {
 	ss := session.List("GET", "sessions", "", "sessions", nil)
 	for {
 		q := <-ss
+		if q == nil {
+			break
+		}
 		fmt.Printf("%v\n\n\n", q)
 	}
 	/*
