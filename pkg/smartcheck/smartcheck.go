@@ -233,6 +233,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			err = json.Unmarshal([]byte(bodyBytes), &response)
 			list, ok := response[key].([]interface{})
 			if !ok {
+				fmt.Printf(string(bodyBytes))
 				panic(fmt.Errorf("%s is not a list", key))
 			}
 			for _, each := range list {
