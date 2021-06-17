@@ -66,23 +66,29 @@ func NewSmartCheck(url string, ignoreTLSError bool) *SmartCheck {
 	}
 }
 
-func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession, error) {
-	requestJSON, err := json.Marshal(credentials)
-	if err != nil {
-		return nil, err
-	}
+func (s *SmartCheck) Request(req *http.Request) (*http.Response, error) {
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: s.ignoreTLSError},
 	}
 	client := &http.Client{Transport: transport}
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-Api-Version", "2018-05-01")
+	return client.Do(req)
+}
+
+func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession, error) {
+	requestJSON, err := json.Marshal(credentials)
+	if err != nil {
+		return nil, err
+
+	}
 	body := bytes.NewBuffer(requestJSON)
 	req, err := http.NewRequest("POST", s.url, body)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Content-Type", "application/json")
-	resp, err := client.Do(req)
+	resp, err := s.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -92,6 +98,7 @@ func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession,
 		return nil, err
 	}
 	var session SmartCheckSession
+	session.smartCheck = s
 	err = json.Unmarshal(bodyBytes, &session.response)
 	if err != nil {
 		return nil, err
@@ -100,7 +107,12 @@ func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession,
 }
 
 type SmartCheckSession struct {
-	response ResponseCreateSession
+	smartCheck *SmartCheck
+	response   ResponseCreateSession
+}
+
+func (s *SmartCheckSession) Delete() error {
+	return nil
 }
 
 func main() {
