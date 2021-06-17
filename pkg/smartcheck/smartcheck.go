@@ -126,8 +126,9 @@ func (s *SmartCheckSession) Request(req *http.Request) (*http.Response, error) {
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", s.response.Token))
 	return s.smartCheck.Request(req)
 }
+
 func (s *SmartCheckSession) Delete() error {
-	url := fmt.Sprintf("%s/sessions/%sa", s.smartCheck.url, s.response.Id)
+	url := fmt.Sprintf("%s/sessions/%s", s.smartCheck.url, s.response.Id)
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
@@ -155,6 +156,32 @@ func (s *SmartCheckSession) Delete() error {
 	return nil
 }
 
+func (s *SmartCheckSession) ListScans() (*ResponseListScans, error) {
+	url := fmt.Sprintf("%s/scans", s.smartCheck.url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := s.Request(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	if len(bodyBytes) == 0 {
+		return nil, fmt.Errorf("Empty response")
+	}
+	var response ResponseListScans
+	err = json.Unmarshal(bodyBytes, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, nil
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
@@ -168,11 +195,19 @@ func main() {
 	session, err := sc.CreateSession(&request)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
+	resp, err := session.ListScans()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(resp)
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-	fmt.Print(err)
+	fmt.Println("Done")
 }
