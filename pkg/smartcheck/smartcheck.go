@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	URL := "https://192.168.184.18:31616/get/sessions"
+	URL := "https://192.168.184.18:31616/api/sessions"
 	fmt.Println("Calling API...")
 
 	requestBody := `{
