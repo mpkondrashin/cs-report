@@ -60,7 +60,7 @@ type SmartCheck struct {
 }
 
 func NewSmartCheck(url string, ignoreTLSError bool) *SmartCheck {
-	return SmartCheck{
+	return &SmartCheck{
 		url:            url,
 		ignoreTLSError: ignoreTLSError,
 	}
@@ -69,34 +69,34 @@ func NewSmartCheck(url string, ignoreTLSError bool) *SmartCheck {
 func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession, error) {
 	requestJSON, err := json.Marshal(credentials)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: s.ignoreTLSError},
 	}
 	client := &http.Client{Transport: transport}
 	body := bytes.NewBuffer(requestJSON)
-	req, err := http.NewRequest("POST", URL, body)
+	req, err := http.NewRequest("POST", s.url, body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	var session SmartCheckSession
 	err = json.Unmarshal(bodyBytes, &session.response)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return session, nil
+	return &session, nil
 }
 
 type SmartCheckSession struct {
@@ -106,7 +106,7 @@ type SmartCheckSession struct {
 func main() {
 	URL := "https://192.168.184.18:31616/api/sessions"
 	fmt.Println("Calling API...")
-	sc := NewSmartCheck(URL)
+	sc := NewSmartCheck(URL, true)
 	request := RequestCreateSessionUser{
 		User: RequestCreateSessionUserCredentials{
 			UserID:   "administrator",
