@@ -238,6 +238,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 		}
 		cursor, ok := response["next"]
 		if !ok {
+			fmt.Println("======= NO NEXT ======")
 			break
 		}
 		url = fmt.Sprintf("%s?cursor=%s", baseURL, cursor)
