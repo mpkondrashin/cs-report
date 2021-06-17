@@ -42,7 +42,7 @@ type (
 		Updated                string
 	}
 
-	ResponseSessions struct {
+	ResponseCreateSession struct {
 		Id              string
 		Href            string
 		User            ResponseUser
@@ -54,46 +54,65 @@ type (
 	}
 )
 
+type SmartCheck struct {
+	url            string
+	ignoreTLSError bool
+}
+
+func NewSmartCheck(url string, ignoreTLSError bool) *SmartCheck {
+	return SmartCheck{
+		url:            url,
+		ignoreTLSError: ignoreTLSError,
+	}
+}
+
+func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession, error) {
+	requestJSON, err := json.Marshal(credentials)
+	if err != nil {
+		return err
+	}
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: s.ignoreTLSError},
+	}
+	client := &http.Client{Transport: transport}
+	body := bytes.NewBuffer(requestJSON)
+	req, err := http.NewRequest("POST", URL, body)
+	if err != nil {
+		return err
+	}
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var session SmartCheckSession
+	err = json.Unmarshal(bodyBytes, &session.response)
+	if err != nil {
+		return err
+	}
+	return session, nil
+}
+
+type SmartCheckSession struct {
+	response ResponseCreateSession
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616/api/sessions"
 	fmt.Println("Calling API...")
-
+	sc := NewSmartCheck(URL)
 	request := RequestCreateSessionUser{
 		User: RequestCreateSessionUserCredentials{
 			UserID:   "administrator",
 			Password: "Zxcv7890!",
 		},
 	}
-	requestJSON, err := json.Marshal(&request)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(requestJSON))
-	ignoreTLSError := true
-	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
-	}
-	client := &http.Client{Transport: transport}
-	body := bytes.NewBuffer(requestJSON)
-	req, err := http.NewRequest("POST", URL, body)
-	if err != nil {
-		fmt.Print(err.Error())
-		return
-	}
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Content-Type", "application/json")
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Print(err.Error())
-	}
-	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Print(err.Error())
-	}
-	//	fmt.Print(string(bodyBytes))
-	var sessions ResponseSessions
-	json.Unmarshal(bodyBytes, &sessions)
-	fmt.Printf("token: %s\n", sessions.Token)
-
+	session, err := sc.CreateSession(&request)
+	fmt.Print(session, err)
 }
