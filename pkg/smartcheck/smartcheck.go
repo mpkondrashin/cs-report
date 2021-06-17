@@ -286,10 +286,10 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("%+v\n", resp.Scans)
-	fmt.Printf("%d\n", len(resp.Scans))
-	s, _ := json.MarshalIndent(resp.Scans, "", "\t")
-	fmt.Print(string(s))
+	//fmt.Printf("%+v\n", resp.Scans)
+	//fmt.Printf("%d\n", len(resp.Scans))
+	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
+	//fmt.Print(string(s))
 
 	session.List("GET", "https://192.168.184.18:31616/api/scans", "limit=1", "scans", nil)
 
