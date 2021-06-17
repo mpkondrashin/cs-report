@@ -281,11 +281,11 @@ func main() {
 		Status:     "",
 	}
 
-	resp, err := session.ListScans(&listScansParameters)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	//	resp, err := session.ListScans(&listScansParameters)
+	//	if err != nil {
+	//		fmt.Println(err)
+	//		return
+	//	}
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
