@@ -54,8 +54,10 @@ func main() {
 	fmt.Println("Calling API...")
 
 	request := RequestCreateSessionUser{
-		UserID:   "administrator",
-		Password: "Zxcv7890!",
+		User: {
+			UserID:   "administrator",
+			Password: "Zxcv7890!",
+		},
 	}
 	requestJSON, err := json.Marshal(&request)
 	if err != nil {
