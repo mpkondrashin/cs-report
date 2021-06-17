@@ -163,12 +163,12 @@ func main() {
 			Password: "Zxcv7890!",
 		},
 	}
-	fmt.Prinln("Create Session")
+	fmt.Println("Create Session")
 	session, err := sc.CreateSession(&request)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Prinln("Delete Session")
+	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
 		fmt.Println(err)
