@@ -255,6 +255,8 @@ func main() {
 	}
 	fmt.Printf("%+v\n", resp.Scans)
 	fmt.Printf("%d\n", len(resp.Scans))
+	s, _ := json.MarshalIndent(resp.Scans, "", "\t")
+	fmt.Print(string(s))
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
