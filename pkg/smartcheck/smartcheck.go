@@ -65,6 +65,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(string(requestJSON))
 	ignoreTLSError := true
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
