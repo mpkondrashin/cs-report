@@ -42,17 +42,18 @@ type (
 		Created                string
 		Updated                string
 	}
-
-	ResponseCreateSession struct {
-		Id              string
-		Href            string
-		User            ResponseUser
-		Token           string
-		Created         string
-		Updated         string
-		Expires         string
-		RoleSessionName string
-	}
+	/*
+		ResponseCreateSession struct {
+			Id              string
+			Href            string
+			User            ResponseUser
+			Token           string
+			Created         string
+			Updated         string
+			Expires         string
+			RoleSessionName string
+		}
+	*/
 	//ResponseDeleteSessionFields {
 
 	//"fields": {
