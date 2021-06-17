@@ -59,8 +59,12 @@ func main() {
 			UserID:   "administrator",
 			Password: "Zxcv7890!",
 		},
+		nil,
 	}
-	requestJSON := json.Marshal(&request)
+	requestJSON, err := json.Marshal(&request)
+	if err != nil {
+		panic(err)
+	}
 	ignoreTLSError := true
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
