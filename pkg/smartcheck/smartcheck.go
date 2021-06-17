@@ -290,7 +290,7 @@ func main() {
 	s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	fmt.Print(string(s))
 
-	session.List("GET", "https://192.168.184.18:31616/api/scans", "", "scans", nil)
+	session.List("GET", "https://192.168.184.18:31616/api/scans", "limit=1", "scans", nil)
 
 	fmt.Println("Delete Session")
 	err = session.Delete()
