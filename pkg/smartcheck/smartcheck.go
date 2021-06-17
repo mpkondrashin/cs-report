@@ -12,6 +12,21 @@ import (
 	//	"os"
 )
 
+type RequestCreateSessionUser struct {
+	UserID   string
+	Password string
+}
+
+type RequestCreateSessionSaml struct {
+	Response     string
+	SelectedRole string
+}
+
+type RequestCreateSession struct {
+	User RequestCreateSessionUser
+	Saml RequestCreateSessionSamlministrator
+}
+
 type ResponseUser struct {
 	Id                     string
 	Href                   string
@@ -39,18 +54,19 @@ func main() {
 	URL := "https://192.168.184.18:31616/api/sessions"
 	fmt.Println("Calling API...")
 
-	requestBody := `{
-  "user": {
-    "userID": "administrator",
-    "password": "Zxcv7890!"
-  }
-}`
+	request := RequestCreateSession{
+		RequestCreateSessionUser{
+			UserID:   "administrator",
+			Password: "Zxcv7890!",
+		},
+	}
+	requestJSON := json.Marshal(&request)
 	ignoreTLSError := true
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: ignoreTLSError},
 	}
 	client := &http.Client{Transport: transport}
-	body := bytes.NewBufferString(requestBody)
+	body := bytes.NewBuffer(requestJSON)
 	req, err := http.NewRequest("POST", URL, body)
 	if err != nil {
 		fmt.Print(err.Error())
@@ -67,7 +83,7 @@ func main() {
 	if err != nil {
 		fmt.Print(err.Error())
 	}
-	fmt.Print(string(bodyBytes))
+	//	fmt.Print(string(bodyBytes))
 	var sessions ResponseSessions
 	json.Unmarshal(bodyBytes, &sessions)
 	fmt.Printf("token: %s\n", sessions.Token)
