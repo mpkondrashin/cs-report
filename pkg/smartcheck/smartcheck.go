@@ -156,7 +156,6 @@ func (s *SmartCheckSession) Delete() error {
 
 func main() {
 	URL := "https://192.168.184.18:31616/api"
-	fmt.Println("Calling API...")
 	sc := NewSmartCheck(URL, true)
 	request := RequestCreateSessionUser{
 		User: RequestCreateSessionUserCredentials{
@@ -164,8 +163,15 @@ func main() {
 			Password: "Zxcv7890!",
 		},
 	}
+	fmt.Prinln("Create Session")
 	session, err := sc.CreateSession(&request)
-	fmt.Print(session, err)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Prinln("Delete Session")
 	err = session.Delete()
+	if err != nil {
+		fmt.Println(err)
+	}
 	fmt.Print(err)
 }
