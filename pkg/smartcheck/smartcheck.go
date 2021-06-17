@@ -37,7 +37,7 @@ type (
 		Name                   string
 		Description            string
 		Role                   string
-		PasswordChangeRequired string
+		PasswordChangeRequired bool
 		Created                string
 		Updated                string
 	}
