@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -14,23 +15,6 @@ import (
 )
 
 type (
-	RequestCreateSessionUserCredentials struct {
-		UserID   string
-		Password string
-	}
-	RequestCreateSessionUser struct {
-		User RequestCreateSessionUserCredentials
-	}
-
-	RequestCreateSessionSamlCredentials struct {
-		Response     string
-		SelectedRole string
-	}
-
-	RequestCreateSessionSaml struct {
-		Saml RequestCreateSessionSamlCredentials
-	}
-
 	ResponseDeleteSession struct {
 		Message string
 	}
@@ -218,6 +202,54 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
+func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) {
+	url := fmt.Sprintf("%s?%s", baseURL, parameters)
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		panic(err)
+		//return nil, err
+	}
+	//go func() {
+	for {
+		resp, err := s.Request(req)
+		if err != nil {
+			panic(err)
+			//return nil, err
+		}
+		defer resp.Body.Close()
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			panic(err)
+			//	return nil, err
+		}
+		if len(bodyBytes) == 0 {
+			panic(fmt.Errorf("Empty response"))
+			//	return nil, fmt.Errorf("Empty response")
+		}
+
+		var response map[string]interface{}
+		err = json.Unmarshal([]byte(bodyBytes), &response)
+		list, ok := response[key].([]interface{})
+		if !ok {
+			panic(fmt.Errorf("%s is not a list", key))
+		}
+		for n, each := range list {
+			fmt.Printf("%d\n%v\n\n\n", n, each)
+		}
+		cursor, ok := response["next"]
+		if !ok {
+			break
+		}
+		url = fmt.Sprintf("%s?cursor=%s", baseURL, cursor)
+		req, err = http.NewRequest(method, url, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+	//	return &response, nil
+
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
@@ -257,6 +289,9 @@ func main() {
 	fmt.Printf("%d\n", len(resp.Scans))
 	s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	fmt.Print(string(s))
+
+	session.List("GET", "https://192.168.184.18:31616/api/scans", "", "scans", nil)
+
 	fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
