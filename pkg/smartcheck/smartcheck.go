@@ -59,7 +59,7 @@ func main() {
 			UserID:   "administrator",
 			Password: "Zxcv7890!",
 		},
-		nil,
+		RequestCreateSessionSaml{},
 	}
 	requestJSON, err := json.Marshal(&request)
 	if err != nil {
