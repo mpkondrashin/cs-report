@@ -45,8 +45,8 @@ func main() {
 		fmt.Print(err.Error())
 	}
 	fmt.Print(string(bodyBytes))
-	//	var responseObject Response
-	//	json.Unmarshal(bodyBytes, &responseObject)
-	//	fmt.Printf("API Response as struct %+v\n", responseObject)
+	var sessions Sessions
+	json.Unmarshal(bodyBytes, &sessions)
+	fmt.Printf("API Response as struct %+v\n", sessions)
 
 }
