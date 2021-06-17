@@ -300,7 +300,7 @@ func main() {
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	//fmt.Print(string(s))
 
-	ss := session.List("GET", "https://192.168.184.18:31616/api/sessions", "", "sessions", nil)
+	ss := session.List("GET", "sessions", "", "sessions", nil)
 	for {
 		q := <-ss
 		fmt.Printf("%v\n\n\n", q)
