@@ -246,7 +246,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 				fmt.Println("======= NO NEXT ======")
 				break
 			}
-			url = fmt.Sprintf("%s?cursor=%s", baseURL, cursor)
+			url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
 			req, err = http.NewRequest(method, url, nil)
 			if err != nil {
 				panic(err)
