@@ -122,6 +122,10 @@ type SmartCheckSession struct {
 	response   ResponseCreateSession
 }
 
+func (s *SmartCheckSession) Request(req *http.Request) (*http.Response, error) {
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", s.response.Token))
+	return s.smartCheck.Request(req)
+}
 func (s *SmartCheckSession) Delete() error {
 	fmt.Print(s.smartCheck.url, s.response.Id)
 
@@ -130,7 +134,7 @@ func (s *SmartCheckSession) Delete() error {
 	if err != nil {
 		return err
 	}
-	resp, err := s.smartCheck.Request(req)
+	resp, err := s.Request(req)
 	if err != nil {
 		return err
 	}
