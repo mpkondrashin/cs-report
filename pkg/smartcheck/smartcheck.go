@@ -12,20 +12,22 @@ import (
 	//	"os"
 )
 
-type Sessions struct {
-	Id   string
-	Href string
-	User struct {
-		Id                     string
-		Href                   string
-		UserID                 string
-		Name                   string
-		Description            string
-		Role                   string
-		PasswordChangeRequired string
-		Created                string
-		Updated                string
-	}
+type ResponseUser struct {
+	Id                     string
+	Href                   string
+	UserID                 string
+	Name                   string
+	Description            string
+	Role                   string
+	PasswordChangeRequired string
+	Created                string
+	Updated                string
+}
+
+type ResponseSessions struct {
+	Id              string
+	Href            string
+	User            ResponseUser
 	Token           string
 	Created         string
 	Updated         string
@@ -66,8 +68,8 @@ func main() {
 		fmt.Print(err.Error())
 	}
 	fmt.Print(string(bodyBytes))
-	var sessions Sessions
+	var sessions ResponseSessions
 	json.Unmarshal(bodyBytes, &sessions)
-	fmt.Printf("API Response as struct %+v\n", sessions)
+	fmt.Printf("token: %s\n", sessions.Token)
 
 }
