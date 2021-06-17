@@ -131,26 +131,31 @@ func (s *SmartCheckSession) Delete() error {
 
 	url := fmt.Sprintf("%s/sessions/%s", s.smartCheck.url, s.response.Id)
 	req, err := http.NewRequest("DELETE", url, nil)
+	fmt.Println("A")
 	if err != nil {
 		return err
 	}
 	resp, err := s.Request(req)
+	fmt.Println("A")
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	fmt.Println("A")
 	if err != nil {
 		return err
 	}
 	var response ResponseDeleteSession
 	err = json.Unmarshal(bodyBytes, &response)
+	fmt.Println("A")
 	if err != nil {
 		return err
 	}
 	if response.Message != "" {
 		return fmt.Errorf("Delete: %s", response.Message)
 	}
+	fmt.Println("A")
 	return nil
 }
 
