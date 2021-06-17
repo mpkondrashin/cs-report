@@ -13,18 +13,17 @@ import (
 )
 
 type RequestCreateSessionUser struct {
-	UserID   string
-	Password string
+	User struct {
+		UserID   string
+		Password string
+	}
 }
 
 type RequestCreateSessionSaml struct {
-	Response     string
-	SelectedRole string
-}
-
-type RequestCreateSession struct {
-	User RequestCreateSessionUser
-	Saml RequestCreateSessionSaml
+	Saml struct {
+		Response     string
+		SelectedRole string
+	}
 }
 
 type ResponseUser struct {
@@ -54,12 +53,9 @@ func main() {
 	URL := "https://192.168.184.18:31616/api/sessions"
 	fmt.Println("Calling API...")
 
-	request := RequestCreateSession{
-		RequestCreateSessionUser{
-			UserID:   "administrator",
-			Password: "Zxcv7890!",
-		},
-		RequestCreateSessionSaml{},
+	request := RequestCreateSessionUser{
+		UserID:   "administrator",
+		Password: "Zxcv7890!",
 	}
 	requestJSON, err := json.Marshal(&request)
 	if err != nil {
