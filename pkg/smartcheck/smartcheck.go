@@ -233,6 +233,10 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 
 			var response map[string]interface{}
 			err = json.Unmarshal([]byte(bodyBytes), &response)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
 			if !ok {
 				fmt.Printf(string(bodyBytes))
