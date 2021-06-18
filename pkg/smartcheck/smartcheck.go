@@ -250,13 +250,13 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 				out <- js
 				//	fmt.Printf("%d\n%v\n\n\n", n, each)
 			}
-			cursor, ok := response["next"]
-			if !ok {
-				//fmt.Println("======= NO NEXT ======")
-				break
-			}
-			url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
-			req, err = http.NewRequest(method, url, nil)
+			//cursor, ok := response["next"]
+			//if !ok {
+			//fmt.Println("======= NO NEXT ======")
+			//	break
+			//}
+			//url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
+			//req, err = http.NewRequest(method, url, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -414,7 +414,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	session.List("/api/scans", "scans", nil)
+	session.List2("/api/scans", "scans", nil)
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
