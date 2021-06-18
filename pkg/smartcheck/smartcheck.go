@@ -400,7 +400,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	defer session.Delete()
+	//	defer session.Delete()
 
 	/*
 		listScansParameters := ListScansParameters{
@@ -415,7 +415,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	session.List2("/scans", "scans", nil)
+	session.List2("/sessions", "sessions", nil)
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
