@@ -415,7 +415,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	session.List2("/api/scans", "scans", nil)
+	session.List2("/scans", "scans", nil)
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
