@@ -12,7 +12,7 @@ import (
 	//	"log"
 	"net/http"
 	//	"os"
-	//	"reflect"
+	"reflect"
 )
 
 type (
@@ -239,6 +239,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 				panic(fmt.Errorf("%s is not a list", key))
 			}
 			for _, each := range list {
+				fmt.Printf("\n\n%v\n\n", reflect.TypeOf(each))
 				out <- each
 				//	fmt.Printf("%d\n%v\n\n\n", n, each)
 			}
