@@ -12,7 +12,7 @@ import (
 	//	"log"
 	"net/http"
 	//	"os"
-	"reflect"
+	//	"reflect"
 )
 
 type (
@@ -203,8 +203,8 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
-func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) chan interface{} {
-	out := make(chan interface{}, 100)
+func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) chan []byte {
+	out := make(chan []byte, 100)
 	go func() {
 		url := fmt.Sprintf("%s/%s?%s", s.smartCheck.url, baseURL, parameters)
 		fmt.Printf(url)
@@ -213,7 +213,6 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			panic(err)
 			//return nil, err
 		}
-		//go func() {
 		for {
 			resp, err := s.Request(req)
 			if err != nil {
@@ -236,15 +235,19 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			if err != nil {
 				panic(err)
 			}
-			fmt.Printf("\n\n%v\n\n", response)
+			//fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
 			if !ok {
 				fmt.Printf(string(bodyBytes))
 				panic(fmt.Errorf("%s is not a list", key))
 			}
 			for _, each := range list {
-				fmt.Printf("\n\n%v\n\n", reflect.TypeOf(each))
-				out <- each
+				//fmt.Printf("\n\n%v\n\n", reflect.TypeOf(each))
+				js, err := json.Marshal(each)
+				if err != nil {
+					panic(err)
+				}
+				out <- js
 				//	fmt.Printf("%d\n%v\n\n\n", n, each)
 			}
 			cursor, ok := response["next"]
@@ -265,20 +268,33 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 
 }
 
-/*
 func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
 	out := make(chan *ResponseRegistry, 100)
 	regChan := s.List("GET", "registries", "", "registries", nil)
 	for reg := range regChan {
 		var response ResponseRegistry
-		err := json.Unmarshal([]byte(reg), &response)
+		err := json.Unmarshal(reg, &response)
 		if err != nil {
 			panic(err)
 		}
 		out <- &response
 	}
 }
-*/
+
+func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *ResponseImage {
+	out := make(chan *ResponseImage, 100)
+	path := fmt.Sprintf("registries/%s/images", registryId)
+	regChan := s.List("GET", path, "", "images", nil)
+	for reg := range regChan {
+		var response ResponseImage
+		err := json.Unmarshal(reg, &response)
+		if err != nil {
+			panic(err)
+		}
+		out <- &response
+	}
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
@@ -330,9 +346,12 @@ func main() {
 		}
 		fmt.Printf("%v\n\n\n", q)
 	}
-	//	for r := range session.ListRegistires() {
-	//		fmt.Prints(r)
-	//	}
+	for r := range session.ListRegistires() {
+		fmt.Print(r)
+		for im := range session.ListImages(r.ID) {
+			fmt.Print(im)
+		}
+	}
 
 	/*fmt.Println("Delete Session")
 	err = session.Delete()
