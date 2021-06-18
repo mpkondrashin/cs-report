@@ -355,7 +355,7 @@ func main() {
 		fmt.Printf("%v\n\n\n", q)
 	}
 	for r := range session.ListRegistries() {
-		fmt.Print(r)
+		//fmt.Print(r)
 		for im := range session.ListRegistryImages(r.ID) {
 			fmt.Print(im)
 		}
