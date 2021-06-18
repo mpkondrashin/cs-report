@@ -3,8 +3,8 @@ package main
 import "time"
 
 type ResponseListScans struct {
-	Scans []ResponseScan `json:"scans"`
-	Next  string         `json:"next"`
+	Scans []Scan `json:"scans"`
+	Next  string `json:"next"`
 }
 
 type ResponseScan struct {

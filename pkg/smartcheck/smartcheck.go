@@ -203,6 +203,70 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
+func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
+	out := make(chan []byte, 100)
+	go func() {
+		req, err := http.NewRequest("GET", url, body)
+		if err != nil {
+			panic(err)
+			//return nil, err
+		}
+		for {
+			resp, err := s.Request(req)
+			if err != nil {
+				panic(err)
+				//return nil, err
+			}
+			fmt.Println(resp)
+			panic(nil)
+			defer resp.Body.Close()
+			bodyBytes, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				panic(err)
+				//	return nil, err
+			}
+			if len(bodyBytes) == 0 {
+				panic(fmt.Errorf("Empty response"))
+				//	return nil, fmt.Errorf("Empty response")
+			}
+
+			var response map[string]interface{}
+			err = json.Unmarshal([]byte(bodyBytes), &response)
+			if err != nil {
+				panic(err)
+			}
+			//fmt.Printf("\n\n%v\n\n", response)
+			list, ok := response[key].([]interface{})
+			if !ok {
+				//fmt.Printf(string(bodyBytes))
+				panic(fmt.Errorf("%s is not a list", key))
+			}
+			for _, each := range list {
+				//fmt.Printf("\n\n%v\n\n", reflect.TypeOf(each))
+				js, err := json.Marshal(each)
+				if err != nil {
+					panic(err)
+				}
+				out <- js
+				//	fmt.Printf("%d\n%v\n\n\n", n, each)
+			}
+			cursor, ok := response["next"]
+			if !ok {
+				//fmt.Println("======= NO NEXT ======")
+				break
+			}
+			url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
+			req, err = http.NewRequest(method, url, nil)
+			if err != nil {
+				panic(err)
+			}
+		}
+		close(out)
+	}()
+	return out
+	//	return &response, nil
+
+}
 func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
