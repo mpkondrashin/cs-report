@@ -207,7 +207,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 	out := make(chan []byte, 100)
 	go func() {
 		url := fmt.Sprintf("%s/%s?%s", s.smartCheck.url, baseURL, parameters)
-		fmt.Printf(url)
+		fmt.Println(url)
 		req, err := http.NewRequest(method, url, body)
 		if err != nil {
 			panic(err)
@@ -238,7 +238,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			//fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
 			if !ok {
-				fmt.Printf(string(bodyBytes))
+				//fmt.Printf(string(bodyBytes))
 				panic(fmt.Errorf("%s is not a list", key))
 			}
 			for _, each := range list {
@@ -252,7 +252,7 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 			}
 			cursor, ok := response["next"]
 			if !ok {
-				fmt.Println("======= NO NEXT ======")
+				//fmt.Println("======= NO NEXT ======")
 				break
 			}
 			url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
@@ -345,19 +345,19 @@ func main() {
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	//fmt.Print(string(s))
-
-	ss := session.List("GET", "registries", "", "registries", nil)
-	for {
-		q := <-ss
-		if q == nil {
-			break
-		}
-		fmt.Printf("%v\n\n\n", q)
-	}
+	/*
+		ss := session.List("GET", "registries", "", "registries", nil)
+		for {
+			q := <-ss
+			if q == nil {
+				break
+			}
+			fmt.Printf("%v\n\n\n", q)
+		}*/
 	for r := range session.ListRegistries() {
 		//fmt.Print(r)
 		for im := range session.ListRegistryImages(r.ID) {
-			fmt.Print(im)
+			fmt.Println(im.ID, im.Href, im.Registry, im.Status)
 		}
 	}
 
