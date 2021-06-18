@@ -376,7 +376,7 @@ func main() {
 			for _, layer := range scan.Details.Results {
 				fmt.Println("Result:")
 				if layer.Malware != "" {
-					fmt.Prinln("Malware: ", layer.Malware)
+					fmt.Println("Malware: ", layer.Malware)
 				}
 				if layer.Vulnerabilities != "" {
 					fmt.Println("Vulnerabilities: ", layer.Vulnerabilities)
