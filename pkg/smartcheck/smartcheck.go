@@ -206,6 +206,7 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
+		fmt.Println(s.smartCheck.url + url)
 		req, err := http.NewRequest("GET", s.smartCheck.url+url, body)
 		if err != nil {
 			panic(err)
