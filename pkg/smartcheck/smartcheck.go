@@ -270,30 +270,36 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 
 func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
 	out := make(chan *ResponseRegistry, 100)
-	regChan := s.List("GET", "registries", "", "registries", nil)
-	for reg := range regChan {
-		var response ResponseRegistry
-		err := json.Unmarshal(reg, &response)
-		if err != nil {
-			panic(err)
+	go func() {
+		regChan := s.List("GET", "registries", "", "registries", nil)
+		for reg := range regChan {
+			var response ResponseRegistry
+			err := json.Unmarshal(reg, &response)
+			if err != nil {
+				panic(err)
+			}
+			out <- &response
 		}
-		out <- &response
-	}
+		close(out)
+	}()
 	return out
 }
 
 func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *ResponseImage {
 	out := make(chan *ResponseImage, 100)
-	path := fmt.Sprintf("registries/%s/images", registryId)
-	regChan := s.List("GET", path, "", "images", nil)
-	for reg := range regChan {
-		var response ResponseImage
-		err := json.Unmarshal(reg, &response)
-		if err != nil {
-			panic(err)
+	go func() {
+		path := fmt.Sprintf("registries/%s/images", registryId)
+		regChan := s.List("GET", path, "", "images", nil)
+		for reg := range regChan {
+			var response ResponseImage
+			err := json.Unmarshal(reg, &response)
+			if err != nil {
+				panic(err)
+			}
+			out <- &response
 		}
-		out <- &response
-	}
+		close(out)
+	}()
 	return out
 }
 
