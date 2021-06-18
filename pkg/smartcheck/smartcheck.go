@@ -358,6 +358,24 @@ func main() {
 		//fmt.Print(r)
 		for im := range session.ListRegistryImages(r.ID) {
 			fmt.Println(im.ID, im.Tag, im.Registry, im.Repository, im.Status)
+			listScansParameters := ListScansParameters{
+				Expand:     "",
+				Cursor:     "",
+				Limit:      1,
+				Registry:   im.Registry,
+				Repository: im.Repository,
+				Tag:        im.Tag,
+				Digest:     im.Digest,
+				Exact:      true,
+				Status:     "",
+			}
+			resp, err := session.ListScans(&listScansParameters)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			fmt.Println(resp)
+
 		}
 	}
 
