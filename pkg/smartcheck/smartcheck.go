@@ -12,6 +12,7 @@ import (
 	//	"log"
 	"net/http"
 	//	"os"
+	//	"reflect"
 )
 
 type (
@@ -259,6 +260,20 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 
 }
 
+/*
+func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
+	out := make(chan *ResponseRegistry, 100)
+	regChan := s.List("GET", "registries", "", "registries", nil)
+	for reg := range regChan {
+		var response ResponseRegistry
+		err := json.Unmarshal([]byte(reg), &response)
+		if err != nil {
+			panic(err)
+		}
+		out <- &response
+	}
+}
+*/
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
@@ -277,6 +292,8 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	defer session.Delete()
+
 	/*
 		listScansParameters := ListScansParameters{
 			Expand:     "",
@@ -300,7 +317,7 @@ func main() {
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
 	//fmt.Print(string(s))
 
-	ss := session.List("GET", "sessions", "", "sessions", nil)
+	ss := session.List("GET", "registries", "", "registries", nil)
 	for {
 		q := <-ss
 		if q == nil {
@@ -308,12 +325,15 @@ func main() {
 		}
 		fmt.Printf("%v\n\n\n", q)
 	}
-	/*
-		fmt.Println("Delete Session")
-		err = session.Delete()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	*/fmt.Println("Done")
+	//	for r := range session.ListRegistires() {
+	//		fmt.Prints(r)
+	//	}
+
+	/*fmt.Println("Delete Session")
+	err = session.Delete()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}*/
+	fmt.Println("Done")
 }
