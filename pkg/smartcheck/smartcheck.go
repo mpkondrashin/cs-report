@@ -203,10 +203,10 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
-func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
+func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
-		req, err := http.NewRequest("GET", url, body)
+		req, err := http.NewRequest("GET", s.smartCheck.url+url, body)
 		if err != nil {
 			panic(err)
 			//return nil, err
@@ -414,11 +414,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	//	resp, err := session.ListScans(&listScansParameters)
-	//	if err != nil {
-	//		fmt.Println(err)
-	//		return
-	//	}
+	session.List("/api/scans", "scans", nil)
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
