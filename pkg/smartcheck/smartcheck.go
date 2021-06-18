@@ -415,7 +415,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	session.List2("/sessions", "sessions", nil)
+	session.List2("/sessions?limit=1", "sessions", nil)
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
