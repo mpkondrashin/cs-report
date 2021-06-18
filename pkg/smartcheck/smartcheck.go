@@ -374,9 +374,16 @@ func main() {
 			fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
 			scan := session.ImageLastScan(im)
 			for _, layer := range scan.Details.Results {
-				fmt.Println("Result: M: ", layer.Malware,
-					"V:", layer.Vulnerabilities,
-					"C:", layer.Contents)
+				fmt.Println("Result:")
+				if layer.Malware != "" {
+					fmt.Prinln("Malware: ", layer.Malware)
+				}
+				if layer.Vulnerabilities != "" {
+					fmt.Println("Vulnerabilities: ", layer.Vulnerabilities)
+				}
+				if layer.Contents != "" {
+					fmt.Println("Contents: ", layer.Contents)
+				}
 			}
 
 		}
