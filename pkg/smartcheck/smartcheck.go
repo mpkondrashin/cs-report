@@ -357,7 +357,7 @@ func main() {
 	for r := range session.ListRegistries() {
 		//fmt.Print(r)
 		for im := range session.ListRegistryImages(r.ID) {
-			fmt.Println(im.ID, im.Href, im.Registry, im.Status)
+			fmt.Println(im.ID, im.Tag, im.Registry, im.Status)
 		}
 	}
 
