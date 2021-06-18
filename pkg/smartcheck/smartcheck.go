@@ -303,6 +303,20 @@ func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *Response
 	return out
 }
 
+func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
+	query := fmt.Sprintf("limit=1&registry=%s&repository=%s&tag=%s&digest=%s&exact=true&",
+		image.Registry, image.Repository, image.Tag, image.Digest)
+	//sb.WriteString("status=")
+	scanChan := s.List("GET", "scans", query, "scans", nil)
+	scan := <-scanChan
+	var response ResponseScan
+	err := json.Unmarshal(scan, &response)
+	if err != nil {
+		panic(err)
+	}
+	return &response
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616/api"
 	sc := NewSmartCheck(URL, true)
@@ -358,23 +372,8 @@ func main() {
 		//fmt.Print(r)
 		for im := range session.ListRegistryImages(r.ID) {
 			fmt.Println(im.ID, im.Tag, im.Registry, im.Repository, im.Status)
-			listScansParameters := ListScansParameters{
-				Expand:     "",
-				Cursor:     "",
-				Limit:      1,
-				Registry:   im.Registry,
-				Repository: im.Repository,
-				Tag:        im.Tag,
-				Digest:     im.Digest,
-				Exact:      true,
-				Status:     "",
-			}
-			resp, err := session.ListScans(&listScansParameters)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			fmt.Println(resp)
+			scan := session.ImageLastScan(im)
+			fmt.Println(scan)
 
 		}
 	}
