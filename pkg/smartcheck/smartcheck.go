@@ -279,6 +279,7 @@ func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
 		}
 		out <- &response
 	}
+	return out
 }
 
 func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *ResponseImage {
@@ -293,6 +294,7 @@ func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *Response
 		}
 		out <- &response
 	}
+	return out
 }
 
 func main() {
@@ -346,9 +348,9 @@ func main() {
 		}
 		fmt.Printf("%v\n\n\n", q)
 	}
-	for r := range session.ListRegistires() {
+	for r := range session.ListRegistries() {
 		fmt.Print(r)
-		for im := range session.ListImages(r.ID) {
+		for im := range session.ListRegistryImages(r.ID) {
 			fmt.Print(im)
 		}
 	}
