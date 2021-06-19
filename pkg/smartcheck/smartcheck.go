@@ -235,7 +235,6 @@ func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
 			if err != nil {
 				panic(fmt.Errorf("%s\n%w", string(bodyBytes), err))
 			}
-			//fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
 			if !ok {
 				panic(fmt.Errorf("%s\n%s is not a list",
@@ -385,6 +384,7 @@ func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
 	query := fmt.Sprintf("/api/scans/limit=1&registry=%s&repository=%s&tag=%s&digest=%s&exact=true&",
 		image.Registry, image.Repository, image.Tag, image.Digest)
 	//sb.WriteString("status=")
+	fmt.Println("Query: ", query)
 	scanChan := s.List(query, "scans", nil)
 	scan := <-scanChan
 	var response ResponseScan
