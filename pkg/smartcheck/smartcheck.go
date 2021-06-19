@@ -417,7 +417,7 @@ func (s *SmartCheckSession) ListMalwareFindings(query string) chan *ResponseLaye
 func (s *SmartCheckSession) ListVulnerabilitiesFindings(query string) chan *ResponseLayerVulnerabilities {
 	out := make(chan *ResponseLayerVulnerabilities, 100)
 	go func() {
-		responseChan := s.List(query, "vulnerabilitie", nil)
+		responseChan := s.List(query, "vulnerabilities", nil)
 		for respJson := range responseChan {
 			var response ResponseLayerVulnerabilities
 			err := json.Unmarshal(respJson, &response)
