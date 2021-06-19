@@ -456,46 +456,17 @@ func main() {
 			Password: "Zxcv7890!",
 		},
 	}
-	//	r := RequestCreateSession{}
-	//	r.User.UserID = "administrator"
-	//	r.User.Password = "Zxcv7890!"
-	fmt.Println("Create Session")
+	//fmt.Println("Create Session")
 	session, err := sc.CreateSession(&request)
 	if err != nil {
 		panic(err)
 	}
-	defer session.Delete()
-
-	/*
-		listScansParameters := ListScansParameters{
-			Expand:     "",
-			Cursor:     "",
-			Limit:      1,
-			Registry:   "",
-			Repository: "",
-			Tag:        "",
-			Digest:     "",
-			Exact:      false,
-			Status:     "",
-		}*/
-
-	//for s := range session.List2("/api/sessions?limit=1", "sessions", nil) {
-	//	fmt.Printf("======\n%s\n======\n", s)
-	//	}
-	//	return
-	//fmt.Printf("%+v\n", resp.Scans)
-	//fmt.Printf("%d\n", len(resp.Scans))
-	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
-	//fmt.Print(string(s))
-	/*
-		ss := session.List("GET", "registries", "", "registries", nil)
-		for {
-			q := <-ss
-			if q == nil {
-				break
-			}
-			fmt.Printf("%v\n\n\n", q)
-		}*/
+	defer func() {
+		err = session.Delete()
+		if err != nil {
+			panic(err)
+		}
+	}()
 	for r := range session.ListRegistries() {
 		fmt.Println("Registry:", r.ID)
 		for im := range session.ListRegistryImages(r.ID) {
@@ -530,5 +501,5 @@ func main() {
 		fmt.Println(err)
 		return
 	}*/
-	fmt.Println("Done")
+	//fmt.Println("Done")
 }
