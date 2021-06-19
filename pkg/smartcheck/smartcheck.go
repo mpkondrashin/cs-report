@@ -483,13 +483,18 @@ func main() {
 				}
 				if layer.Vulnerabilities != "" {
 					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						fmt.Println("Vulnerability: ", vulnerability)
+						name, value := StructCSV(vulnerability)
+						fmt.Println("Vulnerability: N", name)
+						fmt.Println("Vulnerability: V", value)
 					}
 
 				}
 				if layer.Contents != "" {
 					for contents := range session.ListContentsFindings(layer.Contents) {
-						fmt.Println("Contents: ", contents)
+						name, value := StructCSV(contents)
+
+						fmt.Println("Contents: N", name)
+						fmt.Println("Contents: V", value)
 					}
 				}
 			}
