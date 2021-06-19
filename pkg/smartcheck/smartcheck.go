@@ -395,7 +395,7 @@ func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
 }
 
 func main() {
-	URL := "https://192.168.184.18:31616/api"
+	URL := "https://192.168.184.18:31616"
 	sc := NewSmartCheck(URL, true)
 	request := RequestCreateSessionUser{
 		User: RequestCreateSessionUserCredentials{
