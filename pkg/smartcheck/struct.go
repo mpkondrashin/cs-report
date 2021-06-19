@@ -28,14 +28,19 @@ func structCSV(structPtr interface{}, prefix string) (name []string, value []str
 		if prefix != "" {
 			fieldName = fmt.Sprintf("%s.%s", prefix, fieldType.Name)
 		}
+		fmt.Println("fieldName ", fieldName)
 		if fieldValue.Type().Kind() == reflect.Struct {
 			subName, subValue := structCSV(fieldValue.Interface(), prefix)
 			name = append(name, subName...)
 			value = append(value, subValue...)
 		} else {
 			name = append(name, fieldName)
-			//	fmt.Println("name = ", name)
-			value = append(value, fmt.Sprintf("%v", fieldValue.Interface()))
+			fmt.Println("name = ", name)
+			s := "N/A"
+			if fieldValue.CanSet() {
+				s = fmt.Sprintf("%v", fieldValue.Interface())
+			}
+			value = append(value, s)
 		}
 	}
 	return
@@ -51,10 +56,7 @@ type S struct {
 }
 
 func main() {
-	var s S
-	s.A = "AD"
-	s.B.X = 2
-	s.B.Y = 3
+	var s ResponseLayerContents
 	name, value := StructCSV(&s)
 	fmt.Println(name)
 	fmt.Println(value)
