@@ -426,7 +426,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	for s := range session.List2("/sessions?limit=1", "sessions", nil) {
+	for s := range session.List2("/api/sessions?limit=1", "sessions", nil) {
 		fmt.Printf("======\n%s\n======\n", s)
 	}
 	return
