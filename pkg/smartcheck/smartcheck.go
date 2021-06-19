@@ -253,7 +253,7 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 			}
 
 			linkHeader := resp.Header.Get("Link")
-			fmt.Println("link HEader: ", linkHeader)
+			fmt.Println("link Header: ", linkHeader)
 			if linkHeader == "" {
 				return
 			}
@@ -426,7 +426,7 @@ func main() {
 			Status:     "",
 		}*/
 
-	for s := range session.List2("/sessions", "sessions", nil) {
+	for s := range session.List2("/sessions?limit=1", "sessions", nil) {
 		fmt.Printf("======\n%s\n======\n", s)
 	}
 	return
