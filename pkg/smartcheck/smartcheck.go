@@ -52,7 +52,7 @@ func (s *SmartCheck) CreateSession(credentials interface{}) (*SmartCheckSession,
 
 	}
 	body := bytes.NewBuffer(requestJSON)
-	url := fmt.Sprintf("%s/sessions", s.url)
+	url := fmt.Sprintf("%s/api/sessions", s.url)
 	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
 		return nil, err
