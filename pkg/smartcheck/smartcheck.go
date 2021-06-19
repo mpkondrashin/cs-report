@@ -384,8 +384,8 @@ func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
 	query := fmt.Sprintf("/api/scans/limit=1&registry=%s&repository=%s&tag=%s&digest=%s&exact=true&",
 		image.Registry, image.Repository, image.Tag, image.Digest)
 
-	query = fmt.Sprintf("/api/scans/limit=1&repository=%s&tag=%s&digest=%s&exact=true&",
-		image.Repository, image.Tag, image.Digest)
+	query = fmt.Sprintf("/api/scans/limit=1&tag=%s&digest=%s&exact=true&",
+		image.Tag, image.Digest)
 	//sb.WriteString("status=")
 	fmt.Println("Query: ", query)
 	fmt.Printf("image: %+v", image)
