@@ -397,6 +397,23 @@ func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
 	return &response
 }
 
+func (s *SmartCheckSession) ListMalwareFindings(query string) chan *ResponseLayerMalware {
+	out := make(chan *ResponseLayerMalware, 100)
+	go func() {
+		responseChan := s.List(query, "malware", nil)
+		for respJson := range responseChan {
+			var response ResponseLayerMalware
+			err := json.Unmarshal(respJson, &response)
+			if err != nil {
+				panic(err)
+			}
+			out <- &response
+		}
+		close(out)
+	}()
+	return out
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616"
 	sc := NewSmartCheck(URL, true)
@@ -454,7 +471,9 @@ func main() {
 			for _, layer := range scan.Details.Results {
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
-					fmt.Println("Malware: ", layer.Malware)
+					for malware := range session.ListMalwareFindings(layer.Malware) {
+						fmt.Println("Malware: ", malware)
+					}
 				}
 				if layer.Vulnerabilities != "" {
 					fmt.Println("Vulnerabilities: ", layer.Vulnerabilities)
