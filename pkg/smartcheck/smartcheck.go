@@ -493,10 +493,10 @@ func main() {
 		}
 	}
 
-	err = session.Delete()
-	if err != nil {
-		panic(err)
-	}
+	//err = session.Delete()
+	//if err != nil {
+	//	panic(err)
+	//}
 	/*fmt.Println("Delete Session")
 	err = session.Delete()
 	if err != nil {
