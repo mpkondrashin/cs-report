@@ -205,7 +205,7 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 	return &response, nil
 }
 
-func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
+func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
 		uri := s.smartCheck.url + url
@@ -279,6 +279,8 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 	//	return &response, nil
 
 }
+
+/*
 func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
@@ -343,11 +345,11 @@ func (s *SmartCheckSession) List(method, baseURL, parameters, key string, body i
 	//	return &response, nil
 
 }
-
+*/
 func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
 	out := make(chan *ResponseRegistry, 100)
 	go func() {
-		regChan := s.List("GET", "registries", "", "registries", nil)
+		regChan := s.List("/api/registries", "registries", nil)
 		for reg := range regChan {
 			var response ResponseRegistry
 			err := json.Unmarshal(reg, &response)
@@ -364,8 +366,8 @@ func (s *SmartCheckSession) ListRegistries() chan *ResponseRegistry {
 func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *ResponseImage {
 	out := make(chan *ResponseImage, 100)
 	go func() {
-		path := fmt.Sprintf("registries/%s/images", registryId)
-		regChan := s.List("GET", path, "", "images", nil)
+		path := fmt.Sprintf("/api/registries/%s/images", registryId)
+		regChan := s.List(path, "images", nil)
 		for reg := range regChan {
 			var response ResponseImage
 			err := json.Unmarshal(reg, &response)
@@ -380,10 +382,10 @@ func (s *SmartCheckSession) ListRegistryImages(registryId string) chan *Response
 }
 
 func (s *SmartCheckSession) ImageLastScan(image *ResponseImage) *ResponseScan {
-	query := fmt.Sprintf("limit=1&registry=%s&repository=%s&tag=%s&digest=%s&exact=true&",
+	query := fmt.Sprintf("/api/scans/limit=1&registry=%s&repository=%s&tag=%s&digest=%s&exact=true&",
 		image.Registry, image.Repository, image.Tag, image.Digest)
 	//sb.WriteString("status=")
-	scanChan := s.List("GET", "scans", query, "scans", nil)
+	scanChan := s.List(query, "scans", nil)
 	scan := <-scanChan
 	var response ResponseScan
 	err := json.Unmarshal(scan, &response)
@@ -410,7 +412,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//	defer session.Delete()
+	defer session.Delete()
 
 	/*
 		listScansParameters := ListScansParameters{
@@ -425,10 +427,10 @@ func main() {
 			Status:     "",
 		}*/
 
-	for s := range session.List2("/api/sessions?limit=1", "sessions", nil) {
-		fmt.Printf("======\n%s\n======\n", s)
-	}
-	return
+	//for s := range session.List2("/api/sessions?limit=1", "sessions", nil) {
+	//	fmt.Printf("======\n%s\n======\n", s)
+	//	}
+	//	return
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
