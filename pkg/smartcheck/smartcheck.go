@@ -239,8 +239,9 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 			//fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
 			if !ok {
-				//fmt.Printf(string(bodyBytes))
-				panic(fmt.Errorf("%s is not a list", key))
+				fmt.Printf(string(bodyBytes))
+				panic(fmt.Errorf("%s\n%s is not a list",
+					string(bodyBytes), key))
 			}
 			for _, each := range list {
 				//fmt.Printf("\n\n%v\n\n", reflect.TypeOf(each))
