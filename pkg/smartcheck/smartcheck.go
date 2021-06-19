@@ -265,7 +265,7 @@ func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
 				break
 			}
 			url = fmt.Sprintf("%s%s", s.smartCheck.url, linkHref)
-			fmt.Println("URL", url)
+			//fmt.Println("URL", url)
 			req, err = http.NewRequest("GET", url, nil)
 			if err != nil {
 				panic(err)
