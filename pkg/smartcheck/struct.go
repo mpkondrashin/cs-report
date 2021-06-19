@@ -24,7 +24,7 @@ func structCSV(data interface{}, prefix string) (name []string, value []string) 
 			fieldName = fmt.Sprintf("%s.%s", prefix, fieldType.Name)
 		}
 		if fieldValue.Type().Kind() == reflect.Struct {
-			subName, subValue := StructCSV(fieldValue.Interface(), fieldName)
+			subName, subValue := structCSV(fieldValue.Interface(), fieldName)
 			name = append(name, subName...)
 			value = append(value, subValue...)
 		} else {
