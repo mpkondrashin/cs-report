@@ -253,4 +253,71 @@ type (
 			} `json:"related"`
 		} `json:"trendx"`
 	}
+
+	ResponseLayerVulnerabilities struct {
+		Name            string `json:"name"`
+		NamespaceName   string `json:"namespaceName"`
+		Version         string `json:"version"`
+		VersionFormat   string `json:"versionFormat"`
+		Vulnerabilities []struct {
+			Description string `json:"description"`
+			FixedBy     string `json:"fixedBy"`
+			Fixed       struct {
+				Name          string `json:"name"`
+				NamespaceName string `json:"namespaceName"`
+				Version       string `json:"version"`
+				VersionFormat string `json:"versionFormat"`
+				Layer         string `json:"layer"`
+			} `json:"fixed"`
+			Override struct {
+				ID         string    `json:"id"`
+				Href       string    `json:"href"`
+				Name       string    `json:"name"`
+				Package    string    `json:"package"`
+				Version    string    `json:"version"`
+				Registry   string    `json:"registry"`
+				Repository string    `json:"repository"`
+				Tag        string    `json:"tag"`
+				Created    time.Time `json:"created"`
+				Updated    time.Time `json:"updated"`
+				Expires    time.Time `json:"expires"`
+				Comment    string    `json:"comment"`
+			} `json:"override"`
+			Link          string `json:"link"`
+			Name          string `json:"name"`
+			NamespaceName string `json:"namespaceName"`
+			Severity      string `json:"severity"`
+			Metadata      struct {
+			} `json:"metadata"`
+		} `json:"vulnerabilities"`
+		Metrics struct {
+			Total struct {
+				Defcon1    int `json:"defcon1"`
+				Critical   int `json:"critical"`
+				High       int `json:"high"`
+				Medium     int `json:"medium"`
+				Low        int `json:"low"`
+				Negligible int `json:"negligible"`
+				Unknown    int `json:"unknown"`
+			} `json:"total"`
+			Unresolved struct {
+				Defcon1    int `json:"defcon1"`
+				Critical   int `json:"critical"`
+				High       int `json:"high"`
+				Medium     int `json:"medium"`
+				Low        int `json:"low"`
+				Negligible int `json:"negligible"`
+				Unknown    int `json:"unknown"`
+			} `json:"unresolved"`
+			FixAvailable struct {
+				Defcon1    int `json:"defcon1"`
+				Critical   int `json:"critical"`
+				High       int `json:"high"`
+				Medium     int `json:"medium"`
+				Low        int `json:"low"`
+				Negligible int `json:"negligible"`
+				Unknown    int `json:"unknown"`
+			} `json:"fixAvailable"`
+		} `json:"metrics"`
+	}
 )

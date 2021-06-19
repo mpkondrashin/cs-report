@@ -414,6 +414,23 @@ func (s *SmartCheckSession) ListMalwareFindings(query string) chan *ResponseLaye
 	return out
 }
 
+func (s *SmartCheckSession) ListVulnerabilitiesFindings(query string) chan *ResponseLayerVulnerabilities {
+	out := make(chan *ResponseLayerVulnerabilities, 100)
+	go func() {
+		responseChan := s.List(query, "vulnerabilitie", nil)
+		for respJson := range responseChan {
+			var response ResponseLayerVulnerabilities
+			err := json.Unmarshal(respJson, &response)
+			if err != nil {
+				panic(err)
+			}
+			out <- &response
+		}
+		close(out)
+	}()
+	return out
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616"
 	sc := NewSmartCheck(URL, true)
@@ -476,7 +493,10 @@ func main() {
 					}
 				}
 				if layer.Vulnerabilities != "" {
-					fmt.Println("Vulnerabilities: ", layer.Vulnerabilities)
+					for vulnerability := range session.ListVulnerabilityFindings(layer.Vulnerability) {
+						fmt.Println("Vulnerability: ", vulnerability)
+					}
+
 				}
 				if layer.Contents != "" {
 					fmt.Println("Contents: ", layer.Contents)
