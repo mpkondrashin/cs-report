@@ -41,6 +41,7 @@ func structCSV(structPtr interface{}, prefix string) (name []string, value []str
 	return
 }
 
+/*
 type S struct {
 	A string
 	B struct {
@@ -58,3 +59,4 @@ func main() {
 	fmt.Println(name)
 	fmt.Println(value)
 }
+*/
