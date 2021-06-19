@@ -253,19 +253,21 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 			}
 
 			linkHeader := resp.Header.Get("Link")
+			fmt.Println("link HEader: ", linkHeader)
 			if linkHeader == "" {
 				return
 			}
 			linkMap := lh.ParseHeader(linkHeader)
-			linkNext := linkMap["next"]
-			if linkNext == nil {
+			linkNext, ok := linkMap["next"]
+			if !ok {
 				return
 			}
-			linkHref := linkNext["href"]
-			if linkHref == "" {
+			linkHref, ok := linkNext["href"]
+			if !ok {
 				return
 			}
 			url = fmt.Sprintf("%s%s", s.smartCheck.url, linkHref)
+			fmt.Println("URL", url)
 			req, err = http.NewRequest("GET", url, nil)
 			if err != nil {
 				panic(err)
