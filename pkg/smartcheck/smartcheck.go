@@ -87,7 +87,7 @@ func (s *SmartCheckSession) Request(req *http.Request) (*http.Response, error) {
 }
 
 func (s *SmartCheckSession) Delete() error {
-	url := fmt.Sprintf("%s/sessions/%s", s.smartCheck.url, s.response.ID)
+	url := fmt.Sprintf("%s/api/sessions/%s", s.smartCheck.url, s.response.ID)
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
