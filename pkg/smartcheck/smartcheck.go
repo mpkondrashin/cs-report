@@ -461,10 +461,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = session.Delete()
-	if err != nil {
-		panic(err)
-	}
+	defer func() {
+		err = session.Delete()
+		if err != nil {
+			panic(err)
+		}
+	}()
 	for r := range session.ListRegistries() {
 		fmt.Println("Registry:", r.ID)
 		for im := range session.ListRegistryImages(r.ID) {
