@@ -409,8 +409,7 @@ func main() {
 	fmt.Println("Create Session")
 	session, err := sc.CreateSession(&request)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	//	defer session.Delete()
 
