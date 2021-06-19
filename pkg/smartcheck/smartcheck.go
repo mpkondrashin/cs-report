@@ -234,7 +234,7 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 			var response map[string]interface{}
 			err = json.Unmarshal([]byte(bodyBytes), &response)
 			if err != nil {
-				panic(err)
+				panic(fmt.Errorf("%s\n%w", string(bodyBytes), err))
 			}
 			//fmt.Printf("\n\n%v\n\n", response)
 			list, ok := response[key].([]interface{})
