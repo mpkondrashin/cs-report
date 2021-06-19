@@ -13,6 +13,8 @@ import (
 	"net/http"
 	//	"os"
 	//	"reflect"
+	//"github.com/swhite24/link"
+	"github.com/deiu/linkheader"
 )
 
 type (
@@ -218,8 +220,8 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 				panic(err)
 				//return nil, err
 			}
-			link := resp.Header.Get("Link")
-			fmt.Println("L", link)
+			link := lh.ParseHeader(resp.Header.Get("Link"))
+			fmt.Println("link ", link)
 			panic(nil)
 			defer resp.Body.Close()
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
