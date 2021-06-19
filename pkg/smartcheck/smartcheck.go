@@ -476,7 +476,7 @@ func main() {
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
 					for malware := range session.ListMalwareFindings(layer.Malware) {
-						fmt.Println("Malware: ", malware)
+						fmt.Println("Malware: ", StructCSV(malware))
 					}
 				}
 				if layer.Vulnerabilities != "" {
