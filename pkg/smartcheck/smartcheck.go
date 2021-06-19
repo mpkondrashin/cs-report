@@ -493,7 +493,7 @@ func main() {
 					}
 				}
 				if layer.Vulnerabilities != "" {
-					for vulnerability := range session.ListVulnerabilityFindings(layer.Vulnerability) {
+					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
 						fmt.Println("Vulnerability: ", vulnerability)
 					}
 
