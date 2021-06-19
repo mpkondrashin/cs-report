@@ -251,7 +251,7 @@ func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
 			}
 
 			linkHeader := resp.Header.Get("Link")
-			fmt.Println("link Header: ", linkHeader)
+			//fmt.Println("link Header: ", linkHeader)
 			if linkHeader == "" {
 				break
 			}
@@ -452,7 +452,7 @@ func main() {
 			fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
 			scan := session.ImageLastScan(im)
 			for _, layer := range scan.Details.Results {
-				fmt.Println("Result:")
+				//fmt.Println("Result:")
 				if layer.Malware != "" {
 					fmt.Println("Malware: ", layer.Malware)
 				}
