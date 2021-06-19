@@ -208,16 +208,15 @@ func (s *SmartCheckSession) ListScans(parameters *ListScansParameters) (*Respons
 func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 	out := make(chan []byte, 100)
 	go func() {
-		fmt.Println(s.smartCheck.url + url)
-		req, err := http.NewRequest("GET", s.smartCheck.url+url, body)
+		uri := s.smartCheck.url + url
+		req, err := http.NewRequest("GET", uri, body)
 		if err != nil {
-			panic(err)
-			//return nil, err
+			panic(fmt.Errorf("NewRequest %s: %w", uri, err))
 		}
 		for {
 			resp, err := s.Request(req)
 			if err != nil {
-				panic(err)
+				panic(fmt.Errorf("Request %s: %w", uri, err))
 				//return nil, err
 			}
 			defer resp.Body.Close()
