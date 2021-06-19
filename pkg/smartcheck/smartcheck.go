@@ -221,7 +221,7 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 				//return nil, err
 			}
 			link := lh.ParseHeader(resp.Header.Get("Link"))
-			fmt.Println("link ", link["next"])
+			fmt.Println("link ", link["next"]["href"])
 			panic(nil)
 			defer resp.Body.Close()
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
