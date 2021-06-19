@@ -220,9 +220,6 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 				panic(err)
 				//return nil, err
 			}
-			link := lh.ParseHeader(resp.Header.Get("Link"))
-			fmt.Println("link ", link["next"]["href"])
-			panic(nil)
 			defer resp.Body.Close()
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
@@ -254,13 +251,22 @@ func (s *SmartCheckSession) List2(url, key string, body io.Reader) chan []byte {
 				out <- js
 				//	fmt.Printf("%d\n%v\n\n\n", n, each)
 			}
-			//cursor, ok := response["next"]
-			//if !ok {
-			//fmt.Println("======= NO NEXT ======")
-			//	break
-			//}
-			//url = fmt.Sprintf("%s/%s?cursor=%s", s.smartCheck.url, baseURL, cursor)
-			//req, err = http.NewRequest(method, url, nil)
+
+			linkHeader := resp.Header.Get("Link")
+			if linkHeader == "" {
+				return
+			}
+			linkMap := lh.ParseHeader(linkHeader)
+			linkNext := linkMap["next"]
+			if linkNext == nil {
+				return
+			}
+			linkHref := linkNext["href"]
+			if linkHref == "" {
+				return
+			}
+			url = fmt.Sprintf("%s%s", s.smartCheck.url, linkHref)
+			req, err = http.NewRequest("GET", url, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -418,7 +424,10 @@ func main() {
 			Status:     "",
 		}*/
 
-	session.List2("/sessions?limit=1", "sessions", nil)
+	for s := range session.List2("/sessions", "sessions", nil) {
+		fmt.Printf("======\n%s\n======\n", s)
+	}
+	return
 	//fmt.Printf("%+v\n", resp.Scans)
 	//fmt.Printf("%d\n", len(resp.Scans))
 	//s, _ := json.MarshalIndent(resp.Scans, "", "\t")
