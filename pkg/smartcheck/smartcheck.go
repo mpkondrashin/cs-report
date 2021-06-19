@@ -271,7 +271,6 @@ func (s *SmartCheckSession) List(url, key string, body io.Reader) chan []byte {
 				panic(err)
 			}
 		}
-		fmt.Println("Close")
 		close(out)
 	}()
 	return out
@@ -431,6 +430,23 @@ func (s *SmartCheckSession) ListVulnerabilitiesFindings(query string) chan *Resp
 	return out
 }
 
+func (s *SmartCheckSession) ListContentsFindings(query string) chan *ResponseLayerContents {
+	out := make(chan *ResponseLayerContents, 100)
+	go func() {
+		responseChan := s.List(query, "contents", nil)
+		for respJson := range responseChan {
+			var response ResponseLayerContents
+			err := json.Unmarshal(respJson, &response)
+			if err != nil {
+				panic(err)
+			}
+			out <- &response
+		}
+		close(out)
+	}()
+	return out
+}
+
 func main() {
 	URL := "https://192.168.184.18:31616"
 	sc := NewSmartCheck(URL, true)
@@ -499,7 +515,9 @@ func main() {
 
 				}
 				if layer.Contents != "" {
-					fmt.Println("Contents: ", layer.Contents)
+					for contents := range session.ListContentsFindings(layer.Contents) {
+						fmt.Println("Contents: ", contents)
+					}
 				}
 			}
 

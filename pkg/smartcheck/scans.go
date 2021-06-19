@@ -320,4 +320,30 @@ type (
 			} `json:"fixAvailable"`
 		} `json:"metrics"`
 	}
+
+	ResponseLayerContents struct {
+		Filename    string `json:"filename"`
+		Rule        string `json:"rule"`
+		Ruleset     string `json:"ruleset"`
+		Description string `json:"description"`
+		Severity    string `json:"severity"`
+		Metadata    struct {
+			Author  string `json:"author"`
+			License string `json:"license"`
+		} `json:"metadata"`
+		Tags     []string `json:"tags"`
+		Override struct {
+			ID         string    `json:"id"`
+			Href       string    `json:"href"`
+			Filename   string    `json:"filename"`
+			Rule       string    `json:"rule"`
+			Registry   string    `json:"registry"`
+			Repository string    `json:"repository"`
+			Tag        string    `json:"tag"`
+			Created    time.Time `json:"created"`
+			Updated    time.Time `json:"updated"`
+			Expires    time.Time `json:"expires"`
+			Comment    string    `json:"comment"`
+		} `json:"override"`
+	}
 )
