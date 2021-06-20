@@ -475,6 +475,12 @@ func main() {
 			for _, layer := range scan.Details.Results {
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
+					JSON, err = json.MarshalIndent(emp, "", "  ")
+					if err != nil {
+						panic(err)
+					}
+					fmt.Printf("Malware:\n%s\n", string(empJSON))
+					continue
 					for malware := range session.ListMalwareFindings(layer.Malware) {
 						name, value := StructCSV(malware)
 						fmt.Println("Malware N: ", name)
@@ -482,6 +488,7 @@ func main() {
 					}
 				}
 				if layer.Vulnerabilities != "" {
+					continue
 					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
 						name, value := StructCSV(vulnerability)
 						fmt.Println("Vulnerability: N", name)
@@ -490,6 +497,7 @@ func main() {
 
 				}
 				if layer.Contents != "" {
+					continue
 					for contents := range session.ListContentsFindings(layer.Contents) {
 						name, value := StructCSV(contents)
 
