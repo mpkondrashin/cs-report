@@ -475,6 +475,16 @@ func main() {
 			for _, layer := range scan.Details.Results {
 
 				//fmt.Println("Result:")
+				if layer.Malware+layer.Vulnerabilityes+layer.Contents == "" {
+					continue
+				}
+				fmt.Println("Scan competed:", scan.Details.Completed)
+				fmt.Println("Image:", scan.Name)
+				fmt.Println("Layer ID:", layer.ID)
+				fmt.Println("Created at:", layer.CreatedAt)
+				fmt.Println("Create with:", layer.CreatedBy)
+				fmt.Println("Findings:")
+
 				if layer.Malware != "" {
 					/*
 						JSON, err := json.MarshalIndent(layer, "", "  ")
@@ -492,12 +502,6 @@ func main() {
 								malware.Trendx.Confidence)
 							url = malware.Trendx.Found.URL
 						}
-						fmt.Println("Scan competed:", scan.Details.Completed)
-						fmt.Println("Image:", scan.Name)
-						fmt.Println("Layer ID:", layer.ID)
-						fmt.Println("Created at:", layer.CreatedAt)
-						fmt.Println("Create with:", layer.CreatedBy)
-						fmt.Println("Findings:")
 						fmt.Printf("Malware: %s %s (%s)\n", malware.Filename, name, url)
 						/*
 							JSON, err := json.MarshalIndent(malware, "", "  ")
@@ -507,20 +511,8 @@ func main() {
 							fmt.Printf("Malware:\n%s\n", string(JSON))
 						*/
 					}
-					continue
-					for malware := range session.ListMalwareFindings(layer.Malware) {
-						name, value := StructCSV(malware)
-						fmt.Println("Malware N: ", name)
-						fmt.Println("Malware V: ", value)
-					}
 				}
 				if layer.Vulnerabilities != "" {
-					continue
-					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						name, value := StructCSV(vulnerability)
-						fmt.Println("Vulnerability: N", name)
-						fmt.Println("Vulnerability: V", value)
-					}
 
 				}
 				if layer.Contents != "" {
