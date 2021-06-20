@@ -483,8 +483,8 @@ func main() {
 							url = malware.Trendx.Found.URL
 						}
 						fmt.Println(r.Host)
-						fmt.Println(layer.ID, layer.Href, layer.Name, layer.Source.Type, layer.Source.Registry)
-						fmt.Println(layer.Source.Repository, layer.Source.Tag, layer.Source.Digest, layer.Context.Key, layer.Status)
+						fmt.Println(scan.ID, scan.Href, scan.Name, scan.Source.Type, scan.Source.Registry)
+						fmt.Println(scan.Source.Repository, scan.Source.Tag, scan.Source.Digest, scan.Context.Key, scan.Status)
 						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
 						/*
 							JSON, err := json.MarshalIndent(malware, "", "  ")
