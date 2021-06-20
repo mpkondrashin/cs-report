@@ -514,12 +514,7 @@ func main() {
 				}
 				if layer.Vulnerabilities != "" {
 					for v := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						/*JSON, err := json.MarshalIndent(v, "", "  ")
-						if err != nil {
-							panic(err)
-						}
-						fmt.Printf("V:\n%s\n", string(JSON))
-						*/
+						/*						*/
 						fmt.Println("Module/Package:", v.Name)
 						fmt.Println("Version:", v.Version)
 						for _, cve := range v.Vulnerabilities {
@@ -531,12 +526,16 @@ func main() {
 					}
 				}
 				if layer.Contents != "" {
-					continue
 					for contents := range session.ListContentsFindings(layer.Contents) {
-						name, value := StructCSV(contents)
+						JSON, err := json.MarshalIndent(contents, "", "  ")
+						if err != nil {
+							panic(err)
+						}
+						fmt.Printf("Content:\n%s\n", string(JSON))
 
-						fmt.Println("Contents: N", name)
-						fmt.Println("Contents: V", value)
+						fmt.Println("Severity: ", contents.Severity)
+						fmt.Println("Rule: ", contents.Severity)
+
 					}
 				}
 			}
