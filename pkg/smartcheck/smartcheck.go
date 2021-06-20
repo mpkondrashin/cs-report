@@ -513,13 +513,20 @@ func main() {
 					}
 				}
 				if layer.Vulnerabilities != "" {
-					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						JSON, err := json.MarshalIndent(vulnerability, "", "  ")
+					for v := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
+						JSON, err := json.MarshalIndent(v, "", "  ")
 						if err != nil {
 							panic(err)
 						}
-						fmt.Printf("Malware:\n%s\n", string(JSON))
-
+						fmt.Printf("V:\n%s\n", string(JSON))
+						fmt.Println("Module/Package:", v.Name)
+						fmt.Println("Version:", v.Version)
+						for cve := range v.Vulnerabilities {
+							fmt.Println("CVE:", v.Name)
+							fmt.Println("URL:", v.Link)
+							fmt.Println("Severity:", v.Severity)
+							// cve.Description
+						}
 					}
 				}
 				if layer.Contents != "" {
