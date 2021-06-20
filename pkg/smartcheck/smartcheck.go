@@ -494,7 +494,7 @@ func main() {
 						fmt.Println("Scan competed:", scan.Details.Completed)
 						fmt.Println("Image:", scan.Name)
 						fmt.Println("Layer ID:", layer.ID)
-						fmt.Println("Created at: ", layer.CreateAt)
+						fmt.Println("Created at: ", layer.CreatedAt)
 						fmt.Println("Create with: ", layer.CreatedBy)
 						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
 						/*
