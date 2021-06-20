@@ -514,11 +514,12 @@ func main() {
 				}
 				if layer.Vulnerabilities != "" {
 					for v := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						JSON, err := json.MarshalIndent(v, "", "  ")
+						/*JSON, err := json.MarshalIndent(v, "", "  ")
 						if err != nil {
 							panic(err)
 						}
 						fmt.Printf("V:\n%s\n", string(JSON))
+						*/
 						fmt.Println("Module/Package:", v.Name)
 						fmt.Println("Version:", v.Version)
 						for _, cve := range v.Vulnerabilities {
