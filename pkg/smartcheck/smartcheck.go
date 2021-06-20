@@ -468,20 +468,21 @@ func main() {
 		}
 	}()
 	for r := range session.ListRegistries() {
-		fmt.Println("Registry:", r.ID)
+		//fmt.Println("Registry:", r.ID)
 		for im := range session.ListRegistryImages(r.ID) {
-			fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
+			//fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
 			scan := session.ImageLastScan(im)
 			for _, layer := range scan.Details.Results {
 
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
-					JSON, err := json.MarshalIndent(layer, "", "  ")
-					if err != nil {
-						panic(err)
-					}
-					fmt.Printf("Layer:\n%s\n", string(JSON))
-
+					/*
+						JSON, err := json.MarshalIndent(layer, "", "  ")
+						if err != nil {
+							panic(err)
+						}
+						fmt.Printf("Layer:\n%s\n", string(JSON))
+					*/
 					for malware := range session.ListMalwareFindings(layer.Malware) {
 						name := malware.Icrc.Name
 						url := malware.Icrc.URL
