@@ -504,13 +504,7 @@ func main() {
 							url = malware.Trendx.Found.URL
 						}
 						fmt.Printf("Malware: %s %s (%s)\n", malware.Filename, name, url)
-						/*
-							JSON, err := json.MarshalIndent(malware, "", "  ")
-							if err != nil {
-								panic(err)
-							}
-							fmt.Printf("Malware:\n%s\n", string(JSON))
-						*/
+						// Fixed in ohter layres?!
 					}
 				}
 				if layer.Vulnerabilities != "" {
@@ -523,6 +517,7 @@ func main() {
 							fmt.Println("URL:", cve.Link)
 							fmt.Println("Severity:", cve.Severity)
 							// cve.Description
+							// Overriden!!!
 						}
 					}
 				}

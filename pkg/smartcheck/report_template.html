@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+td, th   {text-align: left;}
+</style>
+</head>
+<body>
+	<ul>
+		<li>{{.ID}}</li>
+		<li>{{.CreatedAt}}</li>
+		<li>{{.CreatedBy}}</li>
+	</ul>
+<table>
+    <tr>
+        <th>Malware</th>
+        <th>File</th>
+    </tr>
+    {{ range .Malware}}
+        <tr>
+            <td><a href="{{.URL }}">{{ .Name }}</a></td>
+            <td>{{ .Filename }}</td>
+        </tr>
+    {{ end}}
+</table>
+</body>
+</html>
