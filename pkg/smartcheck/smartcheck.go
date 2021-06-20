@@ -494,9 +494,10 @@ func main() {
 						fmt.Println("Scan competed:", scan.Details.Completed)
 						fmt.Println("Image:", scan.Name)
 						fmt.Println("Layer ID:", layer.ID)
-						fmt.Println("Created at: ", layer.CreatedAt)
-						fmt.Println("Create with: ", layer.CreatedBy)
-						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
+						fmt.Println("Created at:", layer.CreatedAt)
+						fmt.Println("Create with:", layer.CreatedBy)
+						fmt.Println("Findings:")
+						fmt.Printf("Malware: %s %s (%s)\n", malware.Filename, name, url)
 						/*
 							JSON, err := json.MarshalIndent(malware, "", "  ")
 							if err != nil {
