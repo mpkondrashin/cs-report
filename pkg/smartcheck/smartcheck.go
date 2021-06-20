@@ -482,10 +482,7 @@ func main() {
 							name = malware.Trendx.Found.Name
 							url = malware.Trendx.Found.URL
 						}
-						//		fmt.Println(scan.Details.Requested, scan.Details.Started, scan.Details.Updated, scan.Details.Completed)
-
-						//fmt.Println(layer.CreatedAt)
-						fmt.Println(scan.Findings.Scanners.Malware.Updated)
+						fmt.Println(scan.Details.Completed)
 						fmt.Println(scan.Name)
 						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
 						/*
