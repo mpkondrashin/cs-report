@@ -478,6 +478,7 @@ func main() {
 				if layer.Malware+layer.Vulnerabilities+layer.Contents == "" {
 					continue
 				}
+				fmt.Println("==========================")
 				fmt.Println("Scan competed:", scan.Details.Completed)
 				fmt.Println("Image:", scan.Name)
 				fmt.Println("Layer ID:", layer.ID)
