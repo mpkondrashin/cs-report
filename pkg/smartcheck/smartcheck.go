@@ -476,11 +476,20 @@ func main() {
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
 					for malware := range session.ListMalwareFindings(layer.Malware) {
-						JSON, err := json.MarshalIndent(malware, "", "  ")
-						if err != nil {
-							panic(err)
+						name := malware.Icrc.Name
+						url := malware.Icrc.URL
+						if malware.Trendx.Found.Name != "" {
+							name = malware.Trendx.Found.Name
+							url = malware.Trendx.Found.URL
 						}
-						fmt.Printf("Malware:\n%s\n", string(JSON))
+						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
+						/*
+							JSON, err := json.MarshalIndent(malware, "", "  ")
+							if err != nil {
+								panic(err)
+							}
+							fmt.Printf("Malware:\n%s\n", string(JSON))
+						*/
 					}
 					continue
 					for malware := range session.ListMalwareFindings(layer.Malware) {
