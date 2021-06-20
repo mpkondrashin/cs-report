@@ -475,7 +475,7 @@ func main() {
 			for _, layer := range scan.Details.Results {
 
 				//fmt.Println("Result:")
-				if layer.Malware+layer.Vulnerabilityes+layer.Contents == "" {
+				if layer.Malware+layer.Vulnerabilities+layer.Contents == "" {
 					continue
 				}
 				fmt.Println("Scan competed:", scan.Details.Completed)
