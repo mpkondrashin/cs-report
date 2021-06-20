@@ -521,7 +521,7 @@ func main() {
 						fmt.Printf("V:\n%s\n", string(JSON))
 						fmt.Println("Module/Package:", v.Name)
 						fmt.Println("Version:", v.Version)
-						for cve := range v.Vulnerabilities {
+						for _, cve := range v.Vulnerabilities {
 							fmt.Println("CVE:", cve.Name)
 							fmt.Println("URL:", cve.Link)
 							fmt.Println("Severity:", cve.Severity)
