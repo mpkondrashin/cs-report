@@ -513,7 +513,14 @@ func main() {
 					}
 				}
 				if layer.Vulnerabilities != "" {
+					for vulnerability := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
+						JSON, err := json.MarshalIndent(vulnerability, "", "  ")
+						if err != nil {
+							panic(err)
+						}
+						fmt.Printf("Malware:\n%s\n", string(JSON))
 
+					}
 				}
 				if layer.Contents != "" {
 					continue
