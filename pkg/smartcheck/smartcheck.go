@@ -522,9 +522,9 @@ func main() {
 						fmt.Println("Module/Package:", v.Name)
 						fmt.Println("Version:", v.Version)
 						for cve := range v.Vulnerabilities {
-							fmt.Println("CVE:", v.Name)
-							fmt.Println("URL:", v.Link)
-							fmt.Println("Severity:", v.Severity)
+							fmt.Println("CVE:", cve.Name)
+							fmt.Println("URL:", cve.Link)
+							fmt.Println("Severity:", cve.Severity)
 							// cve.Description
 						}
 					}
