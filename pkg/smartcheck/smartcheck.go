@@ -485,7 +485,7 @@ func main() {
 						//		fmt.Println(scan.Details.Requested, scan.Details.Started, scan.Details.Updated, scan.Details.Completed)
 
 						//fmt.Println(layer.CreatedAt)
-						fmt.Println(scan.Findinds.Scanners.Malware.Updated)
+						fmt.Println(scan.Findings.Scanners.Malware.Updated)
 						fmt.Println(scan.Name)
 						fmt.Printf("%s %s (%s)\n", malware.Filename, name, url)
 						/*
