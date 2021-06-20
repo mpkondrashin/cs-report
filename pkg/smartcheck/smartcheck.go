@@ -473,13 +473,22 @@ func main() {
 			fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
 			scan := session.ImageLastScan(im)
 			for _, layer := range scan.Details.Results {
+
 				//fmt.Println("Result:")
 				if layer.Malware != "" {
+					JSON, err := json.MarshalIndent(layer, "", "  ")
+					if err != nil {
+						panic(err)
+					}
+					fmt.Printf("Layer:\n%s\n", string(JSON))
+
 					for malware := range session.ListMalwareFindings(layer.Malware) {
 						name := malware.Icrc.Name
 						url := malware.Icrc.URL
 						if malware.Trendx.Found.Name != "" {
-							name = malware.Trendx.Found.Name
+							name = fmt.Sprintf("%s (Confidence %s%%)",
+								malware.Trendx.Found.Name,
+								malware.Trendx.Confidence)
 							url = malware.Trendx.Found.URL
 						}
 						fmt.Println(scan.Details.Completed)
