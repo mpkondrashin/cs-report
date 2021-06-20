@@ -527,14 +527,16 @@ func main() {
 				}
 				if layer.Contents != "" {
 					for contents := range session.ListContentsFindings(layer.Contents) {
-						JSON, err := json.MarshalIndent(contents, "", "  ")
+						/*JSON, err := json.MarshalIndent(contents, "", "  ")
 						if err != nil {
 							panic(err)
 						}
 						fmt.Printf("Content:\n%s\n", string(JSON))
-
+						*/
 						fmt.Println("Severity: ", contents.Severity)
-						fmt.Println("Rule: ", contents.Severity)
+						fmt.Println("Rule: ", contents.Rule)
+						fmt.Println("Description: ", contents.Description)
+						fmt.Println("File: ", contents.Filename)
 
 					}
 				}
