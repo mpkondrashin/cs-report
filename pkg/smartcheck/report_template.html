@@ -42,10 +42,11 @@ Last Scan Completed On: {{.Completed}} <br/>
 
 {{range .Registries}}
 <hr/>
-<div style="text-align:center">Registry: <b>{{.Name}}<b> </div>
+<div style="text-align:center">Registry: <b>{{.Name}}</b> </div>
 	{{range .Images}}
 		Image:{{.Name}}<br/>
-		{{range .Layers}}
+		<ul>
+		<li>{{range .Layers}}
 		Layer ID: {{.ID}}</br>
 		Create At: {{.CreatedAt}}</br>
 		Create with:<br/>
@@ -103,6 +104,8 @@ Last Scan Completed On: {{.Completed}} <br/>
 				</table>
 			 {{end}}
 		{{end}}
+		</li>
+		</ul>
 	{{end}}
 {{end}}
 </body>
