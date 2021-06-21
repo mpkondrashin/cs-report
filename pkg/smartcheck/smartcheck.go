@@ -580,6 +580,7 @@ func main() {
 
 					}
 				}
+				image.Layers = append(image.Layers, layerReport)
 			}
 			registry.Images = append(registry.Images, image)
 		}
