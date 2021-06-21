@@ -55,7 +55,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 			<h2>Malware</h2>
 			<table>
 			    <tr>
-				<th>Malware</th>
+				<th>Malware:</th>
 				<th>File</th>
 			    </tr>
 				{{range .Malware}}
@@ -67,7 +67,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 			</table>
 			{{end}}
 			{{if .Package}}
-			<h2>Vulnerabilities</h2>
+			<h2>Vulnerabilities:</h2>
 				{{range .Package}}
 				<table>
 				    <tr>
@@ -88,7 +88,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 				 {{end}}
 			 {{end}}
 			 {{if .Contents}}
-			 <h2>Content Findings</h2>
+			 <h2>Content Findings:</h2>
 			 	<table>
 					 <tr>
 				<th>Severity</th>
