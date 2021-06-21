@@ -97,7 +97,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 			 	{{range .Contents}}
 				<tr>
 					<td>{{.Severity}}</td>
-					<td>{{.Rule}}<br/>{{.Description}}</td>
+					<td>{{.Rule}}<br/><small>{{.Description}}</small></td>
 					<td>{{.Filename}}</td>
 				</tr>
 				{{end}}
