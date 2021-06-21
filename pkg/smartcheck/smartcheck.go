@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
+	"time"
 	//	"log"
 	"net/http"
 	//	"os"
@@ -467,12 +469,32 @@ func main() {
 			panic(err)
 		}
 	}()
+	template, err := ioutil.ReadFile("report_template.html")
+	if err != nil {
+		panic(err)
+	}
+	rep := NewReportGenerator(string(template))
+	rep.Report.GeneratedOn = time.Now()
+	rep.Report.Registries = make([]RegistryReport, 0)
 	for r := range session.ListRegistries() {
+		registry := RegistryReport{
+			Name:   r.Name,
+			Images: make([]ImageReport, 0),
+		}
 		//fmt.Println("Registry:", r.ID)
 		for im := range session.ListRegistryImages(r.ID) {
 			//fmt.Println("Image:", im.ID) //, im.Tag, im.Registry, im.Repository, im.Status)
 			scan := session.ImageLastScan(im)
+			image := ImageReport{
+				Name:   scan.Name,
+				Layers: make([]LayerReport, 0),
+			}
 			for _, layer := range scan.Details.Results {
+				layerReport := LayerReport{
+					ID:        layer.ID,
+					CreatedAt: layer.CreatedAt,
+					CreatedBy: layer.CreatedBy,
+				}
 
 				//fmt.Println("Result:")
 				if layer.Malware+layer.Vulnerabilities+layer.Contents == "" {
@@ -487,6 +509,7 @@ func main() {
 				fmt.Println("Findings:")
 
 				if layer.Malware != "" {
+					layerReport.Malware = make([]MalwareReport, 0)
 					/*
 						JSON, err := json.MarshalIndent(layer, "", "  ")
 						if err != nil {
@@ -503,25 +526,46 @@ func main() {
 								malware.Trendx.Confidence)
 							url = malware.Trendx.Found.URL
 						}
+						malwareReport := MalwareReport{
+							Filename: malware.Filename,
+							Name:     name,
+							URL:      url,
+						}
 						fmt.Printf("Malware: %s %s (%s)\n", malware.Filename, name, url)
 						// Fixed in ohter layres?!
+						layerReport.Malware = append(layerReport.Malware, malwareReport)
 					}
 				}
 				if layer.Vulnerabilities != "" {
+					layerReport.Package = make([]PackageReport, 0)
 					for v := range session.ListVulnerabilitiesFindings(layer.Vulnerabilities) {
-						/*						*/
+						packageReport := PackageReport{
+							Name:            v.Name,
+							Version:         v.Version,
+							Vulnerabilities: make([]VulnerabilityReport, 0),
+						}
 						fmt.Println("Module/Package:", v.Name)
 						fmt.Println("Version:", v.Version)
 						for _, cve := range v.Vulnerabilities {
+							vulnerabilityReport := VulnerabilityReport{
+								Name:     cve.Name,
+								Link:     cve.Link,
+								Severity: cve.Severity,
+							}
+
 							fmt.Println("CVE:", cve.Name)
 							fmt.Println("URL:", cve.Link)
 							fmt.Println("Severity:", cve.Severity)
 							// cve.Description
 							// Overriden!!!
+							packageReport.Vulnerabilities = append(packageReport.Vulnerabilities, vulnerabilityReport)
 						}
+						layerReport.Package = append(layerReport.Package, packageReport)
 					}
 				}
 				if layer.Contents != "" {
+
+					//Contents  []ContentsReport
 					for contents := range session.ListContentsFindings(layer.Contents) {
 						/*JSON, err := json.MarshalIndent(contents, "", "  ")
 						if err != nil {
@@ -537,8 +581,19 @@ func main() {
 					}
 				}
 			}
-
+			registry.Images = append(registry.Images, image)
 		}
+		rep.Report.Registries = append(rep.Report.Registries, registry)
+
+	}
+	filename := "report.html"
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	err = rep.Generate(f)
+	if err != nil {
+		panic(err)
 	}
 
 	//err = session.Delete()

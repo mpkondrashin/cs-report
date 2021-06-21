@@ -6,22 +6,69 @@ td, th   {text-align: left;}
 </style>
 </head>
 <body>
-	<ul>
-		<li>{{.ID}}</li>
-		<li>{{.CreatedAt}}</li>
-		<li>{{.CreatedBy}}</li>
-	</ul>
-<table>
-    <tr>
-        <th>Malware</th>
-        <th>File</th>
-    </tr>
-    {{ range .Malware}}
-        <tr>
-            <td><a href="{{.URL }}">{{ .Name }}</a></td>
-            <td>{{ .Filename }}</td>
-        </tr>
-    {{ end}}
-</table>
+Generate On {{.GeneratedOn}}<br/>
+Completed: {{.Completed}} <br/>
+
+{{range .Registries}}
+	Registry: {{.Name}} </br>
+	{{range .Images}}
+		Image:{{.Name}}<br/>
+		{{range .Layers}}
+		<ul>
+			<li>{{.ID}}</li>
+			<li>{{.CreatedAt}}</li>
+			<li>{{.CreatedBy}}</li>
+		</ul>
+			{{if .Malware}}
+			<table>
+			    <tr>
+				<th>Malware</th>
+				<th>File</th>
+			    </tr>
+				{{range .Malware}}
+				<tr>
+				    <td><a href="{{.URL}}">{{.Name}}</a></td>
+				    <td>{{.Filename}}</td>
+				</tr>
+			    	{{end}}
+			</table>
+			{{end}}
+			{{range .Package}}
+			<table>
+			    <tr>
+				<th>Module/Package</th>
+				<th>Severity</th>
+				<th>Vulnerabilities</th>
+			    </tr>
+			    {{$name := .Name}}
+			    {{$version := .Version}}
+				   {{range .Vulnerabilities}}
+				<tr>
+					<td>{{$name}}<br/>{{$version}} </td>
+				    <td>{{.Severity}}</td>
+				    <td><a href="{{.Link}}">{{.Name}}</a></td>
+				</tr>
+				    {{end}}
+			 </table>
+			 {{end}}
+			 {{if .Contents}}
+			 	<table>
+					 <tr>
+				<th>Severity</th>
+				<th>Rule</th>
+				<th>File</th>
+			    </tr>
+			 	{{range .Contents}}
+				<tr>
+					<td>{{.Severity}}</td>
+					<td>{{.Rule}}<br/>{{.Description}}</td>
+					<td>{{.Filename}}</td>
+				</tr>
+				{{end}}
+				</table>
+			 {{end}}
+		{{end}}
+	{{end}}
+{{end}}
 </body>
 </html>
