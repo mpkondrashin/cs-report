@@ -16,7 +16,7 @@ type (
 	SmartCheckReport struct {
 		GeneratedOn time.Time
 		Completed   time.Time
-		Difference  time.Time
+		Difference  time.Duration
 		Registries  []RegistryReport
 	}
 	RegistryReport struct {
