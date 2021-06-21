@@ -38,10 +38,11 @@ th {
 <body>
 	<h1>Container Security Report</h1>
 Generated On {{.GeneratedOn}}<br/>
-Completed: {{.Completed}} <br/>
+Last Scan Completed On: {{.Completed}} <br/>
 
 {{range .Registries}}
-	Registry: {{.Name}} </br>
+<hr/>
+<div style="text-align:center">Registry: <b>{{.Name}}<b> </div>
 	{{range .Images}}
 		Image:{{.Name}}<br/>
 		{{range .Layers}}
