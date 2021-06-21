@@ -594,6 +594,7 @@ func main() {
 		rep.Report.Registries = append(rep.Report.Registries, registry)
 
 	}
+	rep.Report.Difference = rep.Report.Completed.Sub(rep.Report.GeneratedOn)
 	filename := "report.html"
 	f, err := os.Create(filename)
 	if err != nil {

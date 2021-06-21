@@ -31,7 +31,6 @@ th {
 .createdby {
 	background-color: #F2F2F2;
 	padding: 8px;
- width: 100%;
 }
 .image {
 background-color: #F2F2F2;
@@ -48,7 +47,7 @@ h2 {
 <body>
 	<h1>Container Security Report</h1>
 Generated On {{.GeneratedOn}}<br/>
-Last Scan Completed On: {{.Completed}} <br/>
+Last Scan Completed On: {{.Completed}} <small>({{.Difference}} ago)</small> <br/>
 
 {{range .Registries}}
 <hr/>
@@ -69,7 +68,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 		Create with:<br/>
 		<div class="createdby">{{.CreatedBy}}</div>
 			{{if .Malware}}
-			<h3>Malware</h3>
+			<h3>Malware Findings:</h3>
 			<table>
 			    <tr>
 				<th>Malware:</th>
@@ -84,7 +83,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 			</table>
 			{{end}}
 			{{if .Package}}
-			<h3>Vulnerabilities:</h3>
+			<h3>Vulnerability Findings:</h3>
 				{{range .Package}}
 				<table>
 				    <tr>
