@@ -489,6 +489,7 @@ func main() {
 				Name:   scan.Name,
 				Layers: make([]LayerReport, 0),
 			}
+			rep.Report.Completed = scan.Details.Completed
 			for _, layer := range scan.Details.Results {
 				layerReport := LayerReport{
 					ID:        layer.ID,

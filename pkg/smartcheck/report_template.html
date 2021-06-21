@@ -4,7 +4,7 @@
 <style>
 body {
  font-family: Arial, Helvetica, sans-serif;
-
+ padding: 8px;
 }
 table {
  width: 100%;
@@ -29,14 +29,15 @@ th {
   color: white;
 }
 .createdby {
-	background-color: #B0B0B0;
+	background-color: #F2F2F2;
 	padding: 8px;
  width: 100%;
 }
 </style>
 </head>
 <body>
-Generate On {{.GeneratedOn}}<br/>
+	<h1>Container Security Report</h1>
+Generated On {{.GeneratedOn}}<br/>
 Completed: {{.Completed}} <br/>
 
 {{range .Registries}}
