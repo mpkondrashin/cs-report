@@ -182,7 +182,8 @@ func main() {
 
 	}
 	rep.Report.Difference = rep.Report.GeneratedOn.Sub(rep.Report.Completed)
-	filename := "report.html"
+	filename := rep.Report.GeneratedOn.Format("20060102_report.html")
+	//filename := "report.html"
 	f, err := os.Create(filename)
 	if err != nil {
 		panic(err)
@@ -191,16 +192,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	//err = session.Delete()
-	//if err != nil {
-	//	panic(err)
-	//}
-	/*fmt.Println("Delete Session")
-	err = session.Delete()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}*/
-	//fmt.Println("Done")
+	fmt.Printf("Output writted to: %s", filename)
 }
