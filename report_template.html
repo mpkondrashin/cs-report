@@ -3,23 +3,23 @@
 <head>
 <style>
 body {
- font-family: Arial, Helvetica, sans-serif;
- padding: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 8px;
 }
 table {
- width: 100%;
+  width: 100%;
   border-collapse: collapse;
 }
 td, th   {
-	text-align: left;
- border: 1px solid #ddd;
+  text-align: left;
+  border: 1px solid #ddd;
   padding: 8px;
 }
 tr:nth-child(even){
-		background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 tr:hover {
-	background-color: #ddd;
+  background-color: #ddd;
 }
 th {
   padding-top: 12px;
@@ -29,25 +29,25 @@ th {
   color: white;
 }
 .createdby {
-	background-color: #F2F2F2;
-	padding: 8px;
+  background-color: #F2F2F2;
+  padding: 8px;
 }
 .image {
-background-color: #F2F2F2;
-border-radius: 20px;
-    height:40px;
-    padding-left:20px;
-    padding-right:20px;
+  background-color: #F2F2F2;
+  border-radius: 20px;
+  height:40px;
+  padding-left:20px;
+  padding-right:20px;
 }
 h2 {
-	text-align: center;
+  text-align: center;
 }
 </style>
 </head>
 <body>
-	<h1>Container Security Report</h1>
+<h1>Container Security Report</h1>
 Generated On {{.GeneratedOn}}<br/>
-Last Scan Completed On: {{.Completed}} <small>({{.Difference}} ago)</small> <br/>
+Last scan completed on: {{.Completed}} <small>({{.Difference}} ago)</small> <br/>
 
 {{range .Registries}}
 <hr/>
@@ -64,8 +64,8 @@ Last Scan Completed On: {{.Completed}} <small>({{.Difference}} ago)</small> <br/
 		<ul>
 		<li>{{range .Layers}}
 		Layer ID: {{.ID}}</br>
-		Create At: {{.CreatedAt}}</br>
-		Create with:<br/>
+		Create at: {{.CreatedAt}}</br>
+		Created with:<br/>
 		<div class="createdby">{{.CreatedBy}}</div>
 			{{if .Malware}}
 			<h3>Malware Findings:</h3>
