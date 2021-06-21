@@ -51,7 +51,14 @@ Last Scan Completed On: {{.Completed}} <br/>
 <div style="text-align:center">Registry: <b>{{.Name}}</b> </div>
 	{{range .Images}}
 	<br/>
-	<div class="image">{{.Name}}</div>
+<div style="display: table; height: 40px; overflow: hidden;">
+  <div style="display: table-cell; vertical-align: middle;">
+    <div>
+      {{.Name}}
+    </div>
+  </div>
+</div>
+	<div class="image">/div>
 		<ul>
 		<li>{{range .Layers}}
 		Layer ID: {{.ID}}</br>
