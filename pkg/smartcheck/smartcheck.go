@@ -565,9 +565,15 @@ func main() {
 					}
 				}
 				if layer.Contents != "" {
+					layerReport.Contents = make([]ContentsReport, 0)
 
-					//Contents  []ContentsReport
 					for contents := range session.ListContentsFindings(layer.Contents) {
+						contentsReport := ContentsReport{
+							Severity:    contents.Severity,
+							Rule:        contents.Rule,
+							Description: contents.Description,
+							Filename:    contents.Filename,
+						}
 						/*JSON, err := json.MarshalIndent(contents, "", "  ")
 						if err != nil {
 							panic(err)
@@ -578,7 +584,7 @@ func main() {
 						fmt.Println("Rule: ", contents.Rule)
 						fmt.Println("Description: ", contents.Description)
 						fmt.Println("File: ", contents.Filename)
-
+						layerReport.Contents = append(layerReport.Contents, contentsReport)
 					}
 				}
 				image.Layers = append(image.Layers, layerReport)
