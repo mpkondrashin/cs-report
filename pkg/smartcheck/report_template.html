@@ -28,6 +28,11 @@ th {
   background-color: #04AA6D;
   color: white;
 }
+.createby {
+	background-color: #B0B0B0;
+	padding: 8px;
+ width: 100%;
+}
 </style>
 </head>
 <body>
@@ -39,12 +44,12 @@ Completed: {{.Completed}} <br/>
 	{{range .Images}}
 		Image:{{.Name}}<br/>
 		{{range .Layers}}
-		<ul>
-			<li>{{.ID}}</li>
-			<li>{{.CreatedAt}}</li>
-			<li>{{.CreatedBy}}</li>
-		</ul>
+		Layer ID: {{.ID}}</br>
+		Create At: {{.CreatedAt}}</br>
+		Create with:<br/>
+		<div id="createdby">{{.CreatedBy}}</div>
 			{{if .Malware}}
+			<h2>Malware</h2>
 			<table>
 			    <tr>
 				<th>Malware</th>
@@ -58,23 +63,26 @@ Completed: {{.Completed}} <br/>
 			    	{{end}}
 			</table>
 			{{end}}
-			{{range .Package}}
-			<table>
-			    <tr>
-				<th>Module/Package</th>
-				<th>Severity</th>
-				<th>Vulnerabilities</th>
-			    </tr>
-			    {{$name := .Name}}
-			    {{$version := .Version}}
-				   {{range .Vulnerabilities}}
-				<tr>
-					<td>{{$name}}<br/>{{$version}} </td>
-				    <td>{{.Severity}}</td>
-				    <td><a href="{{.Link}}">{{.Name}}</a></td>
-				</tr>
-				    {{end}}
-			 </table>
+			{{if .Package}}
+			<h2>Vulnerabilities</h2>
+				{{range .Package}}
+				<table>
+				    <tr>
+					<th>Module/Package</th>
+					<th>Severity</th>
+					<th>Vulnerabilities</th>
+				    </tr>
+				    {{$name := .Name}}
+				    {{$version := .Version}}
+					   {{range .Vulnerabilities}}
+					<tr>
+						<td>{{$name}}<br/><small>{{$version}}</small></td>
+					    <td>{{.Severity}}</td>
+					    <td><a href="{{.Link}}">{{.Name}}</a></td>
+					</tr>
+					    {{end}}
+				 </table>
+				 {{end}}
 			 {{end}}
 			 {{if .Contents}}
 			 	<table>
