@@ -40,6 +40,9 @@ border-radius: 20px;
     padding-left:20px;
     padding-right:20px;
 }
+h2 {
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -49,7 +52,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 
 {{range .Registries}}
 <hr/>
-<div style="text-align:center">Registry: <b>{{.Name}}</b> </div>
+<h2>Registry: <b>{{.Name}}</b> </h2>
 	{{range .Images}}
 	<br/>
 <div class="image" style="display: table; height: 40px; overflow: hidden;">
@@ -66,7 +69,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 		Create with:<br/>
 		<div class="createdby">{{.CreatedBy}}</div>
 			{{if .Malware}}
-			<h2>Malware</h2>
+			<h3>Malware</h3>
 			<table>
 			    <tr>
 				<th>Malware:</th>
@@ -81,7 +84,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 			</table>
 			{{end}}
 			{{if .Package}}
-			<h2>Vulnerabilities:</h2>
+			<h3>Vulnerabilities:</h3>
 				{{range .Package}}
 				<table>
 				    <tr>
@@ -102,7 +105,7 @@ Last Scan Completed On: {{.Completed}} <br/>
 				 {{end}}
 			 {{end}}
 			 {{if .Contents}}
-			 <h2>Content Findings:</h2>
+			 <h3>Content Findings:</h3>
 			 	<table>
 					 <tr>
 				<th>Severity</th>
