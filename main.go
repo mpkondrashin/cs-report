@@ -182,7 +182,7 @@ func main() {
 
 	}
 	rep.Report.Difference = rep.Report.GeneratedOn.Sub(rep.Report.Completed)
-	filename := rep.Report.GeneratedOn.Format("20060102_report.html")
+	filename := rep.Report.GeneratedOn.Format("report_20060102.html")
 	//filename := "report.html"
 	f, err := os.Create(filename)
 	if err != nil {
@@ -192,5 +192,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Output writted to: %s", filename)
+	fmt.Printf("Output writted to: %s\n", filename)
 }
