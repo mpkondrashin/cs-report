@@ -7,5 +7,5 @@ by Mikhail Kondrashin
 
 This utility provides ability to generate reports on last scan of two following products:
 [CloudOne Container Security](https://www.trendmicro.com/en_my/business/products/hybrid-cloud/cloud-one-container-image-security.html) and 
-(AKA [Deep Security Smart Check](https://deep-security.github.io/smartcheck-docs/admin_docs/admin.html)
+[Deep Security Smart Check](https://deep-security.github.io/smartcheck-docs/admin_docs/admin.html)
 
