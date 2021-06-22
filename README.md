@@ -14,11 +14,19 @@ cs-report generates reports in HTML format.
 **Note:** cs-report does not initiate registry scans. It uses last scan result.
 
 Usage of cs-report:
-  -ignore_tls
-    	Ignore TLS Errors 
+```
+  -url string
+    	Smart Check/Container Security URL (i.e. https://10.1.1.10:31616)
+ -user string
+    	User name (default "administrator")  
   -password string
     	Password
-  -url string
-    	Smart Check/Container Security URL
-  -user string
-    	User name (default "administrator")  
+   -ignore_tls
+    	Ignore TLS Errors when connecting to Smart Check/Container Security
+```
+
+After execution cs-report generates report into filename of following format:
+```
+report_YYYYMMDD.html
+```
+
