@@ -15,13 +15,13 @@ cs-report generates reports in HTML format.
 
 Usage of cs-report:
 ```
-  -url string
+ -url string
     	Smart Check/Container Security URL (i.e. https://10.1.1.10:31616)
  -user string
     	User name (default "administrator")  
-  -password string
+ -password string
     	Password
-   -ignore_tls
+ -ignore_tls
     	Ignore TLS Errors when connecting to Smart Check/Container Security
 ```
 
