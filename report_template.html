@@ -84,13 +84,13 @@ Last scan completed on: {{.Completed}} <small>({{.Difference}} ago)</small> <br/
 			{{end}}
 			{{if .Package}}
 			<h3>Vulnerability Findings:</h3>
-				{{range .Package}}
 				<table>
 				    <tr>
 					<th>Module/Package</th>
 					<th>Severity</th>
 					<th>Vulnerabilities</th>
 				    </tr>
+				{{range .Package}}
 				    {{$name := .Name}}
 				    {{$version := .Version}}
 					   {{range .Vulnerabilities}}
@@ -100,8 +100,8 @@ Last scan completed on: {{.Completed}} <small>({{.Difference}} ago)</small> <br/
 					    <td><a href="{{.Link}}">{{.Name}}</a></td>
 					</tr>
 					    {{end}}
-				 </table>
 				 {{end}}
+				 </table>
 			 {{end}}
 			 {{if .Contents}}
 			 <h3>Content Findings:</h3>
