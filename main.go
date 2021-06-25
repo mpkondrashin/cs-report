@@ -181,7 +181,7 @@ func main() {
 		rep.Report.Registries = append(rep.Report.Registries, registry)
 
 	}
-	rep.Report.Difference = rep.Report.GeneratedOn.Sub(rep.Report.Completed).Round(time.Minute)
+	rep.Report.Difference = rep.Report.GeneratedOn.Sub(rep.Report.Completed).Round(time.Second)
 	filename := rep.Report.GeneratedOn.Format("report_20060102.html")
 	//filename := "report.html"
 	f, err := os.Create(filename)
