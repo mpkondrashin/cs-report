@@ -30,4 +30,6 @@ After execution cs-report generates report into filename of following format:
 report_YYYYMMDD.html
 ```
 
+## Report Example
+
 ![Report example](screen.png)
